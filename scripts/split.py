@@ -11,6 +11,9 @@ DEST = OUTPUT / 'Modul_8_separata_blad'
 DEST.mkdir(parents=True, exist_ok=True)
 source = PdfReader(OUTPUT / 'Modul_8_studieblad.pdf')
 assert len(source.pages) == 36, 'Expected 31 worksheets and five answer pages.'
+# This directory contains generated files only. Remove renamed v1 sheets too.
+for previous in DEST.glob('*.pdf'):
+    previous.unlink()
 written = []
 for index, page in enumerate(source.pages):
     text = page.extract_text()
@@ -33,4 +36,9 @@ for index, page in enumerate(source.pages):
 with zipfile.ZipFile(OUTPUT / 'Modul_8_separata_blad.zip', 'w', zipfile.ZIP_DEFLATED) as archive:
     for target in sorted(written):
         archive.write(target, f'{DEST.name}/{target.name}')
+answers = PdfWriter()
+for page in source.pages[31:]:
+    answers.add_page(page)
+with (OUTPUT / 'Modul_8_facit.pdf').open('wb') as stream:
+    answers.write(stream)
 print(f'Created {len(written)} separate PDFs and ZIP.')

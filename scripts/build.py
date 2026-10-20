@@ -1,3 +1,12 @@
+"""Render editable worksheet content as vector A4 pages with tailored workspaces."""
+from pathlib import Path
+import json,re,math
+from functools import lru_cache
+from html import escape
+import matplotlib
+matplotlib.use('Agg')
+from matplotlib.mathtext import MathTextParser
+from matplotlib.font_manager import FontProperties,findfont
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase import pdfmetrics
@@ -5,111 +14,272 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib import colors
-from pathlib import Path
-import os
-ROOT = Path(__file__).resolve().parent.parent
-os.chdir(ROOT)
-Path("output/pdf").mkdir(parents=True, exist_ok=True)
-
-pdfmetrics.registerFont(TTFont('D','/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'))
-pdfmetrics.registerFont(TTFont('DB','/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'))
-# id | title | introduction | rules | worked | calculations | text worked | text exercise | answers | trained
-raw=r'''1.1|Addition och subtraktion med negativa tal|Negativa tal finns till exempel på termometern. På tallinjen ligger de till vänster om noll.|Addera ett positivt tal: gå åt höger. Subtrahera ett positivt tal: gå åt vänster. Att subtrahera ett negativt tal blir addition: a − (−b) = a + b.|−3 + 5 = 2. Börja vid −3 och gå 5 steg åt höger.\n4 − (−2) = 4 + 2 = 6.|−2 + 3; −4 − 2; 5 + (−8); −3 − (−7)|Det är −4 °C. Temperaturen stiger 6 grader. Vad blir temperaturen?\nStiger betyder att vi adderar: −4 + 6 = 2 °C.|Det är 3 °C. Temperaturen sjunker 8 grader. Vad blir temperaturen?|1; −6; −3; 4 / −5 °C|Addera och subtrahera negativa tal; Tolka temperaturförändringar
-1.2|Multiplikation och division med negativa tal|Tecknet visar om svaret blir positivt eller negativt.|Lika tecken ger plus: (−a) · (−b) = ab. Olika tecken ger minus: (−a) · b = −ab. Samma teckenregler gäller vid division.|(−3) · 4 = −12\n(−12) / (−3) = 4| (−2) · 3; (−4) · (−2); (−15) / 5; 18 / (−3)|Saldot minskar med 20 kr per dag i 3 dagar. Hur stor är förändringen?\nMinskning skrivs negativt: 3 · (−20) = −60 kr.|Ett saldo förändras med −15 kr per dag i 4 dagar. Vad är den totala förändringen?|−6; 8; −3; −6 / −60 kr|Använda teckenregler; Beräkna en negativ förändring
-1.3|Blandade räknesätt|När flera räknesätt finns i samma uttryck behöver vi en gemensam räkneordning.|1. Parenteser. 2. Potenser. 3. Multiplikation och division. 4. Addition och subtraktion. På samma nivå räknar du från vänster.|2 + 3 · 4 = 2 + 12 = 14\n(2 + 3) · 4 = 5 · 4 = 20|3 + 2 · 5; (3 + 2) · 5; 18 / 3 + 2; 20 − 2 · (3 + 4)|Du köper en penna för 10 kr och 3 häften för 15 kr styck. Vad kostar allt?\nHäftena kostar 3 · 15 kr. Totalt: 10 + 3 · 15 = 55 kr.|Du har 100 kr och köper 4 bullar för 15 kr styck. Hur mycket har du kvar?|13; 25; 8; 6 / 40 kr|Följa räkneordningen; Skriva en beräkning från en text
-1.4|Multiplikation och division med bråk|Bråk beskriver delar av en helhet. Ett bråkstreck betyder division.|(a/b) · (c/d) = (a · c)/(b · d). Vid division: vänd det andra bråket och multiplicera. Förkorta genom att dividera täljare och nämnare med samma tal.|(1/2) · (2/3) = 2/6 = 1/3\n(1/2) / (1/4) = (1/2) · (4/1) = 2|(1/2) · (1/3); (2/3) · (3/4); (1/2) / (1/2); (3/4) / (1/8)|En kanna innehåller 3/4 liter. Varje glas rymmer 1/4 liter. Hur många glas räcker det till?\nAntal glas = (3/4) / (1/4) = 3.|Du har 1/2 liter saft. Ett glas rymmer 1/8 liter. Hur många fulla glas får du?|1/6; 1/2; 1; 6 / 4 glas|Multiplicera och dividera bråk; Förkorta bråk
-1.5|Potenser|Potenser är ett kort sätt att skriva upprepad multiplikation.|a³ = a · a · a. Basen a är talet som multipliceras. Exponenten 3 anger antalet faktorer.|2⁴ = 2 · 2 · 2 · 2 = 16\n3² + 1 = 9 + 1 = 10|2²; 3³; 10³; 2 · 3²|En kvadrat har sidan 5 cm. Hur stor är arean?\nArean är sidan gånger sig själv: 5² = 25 cm².|En kvadrat har sidan 7 cm. Beräkna arean med hjälp av en potens.|4; 27; 1 000; 18 / 7² = 49 cm²|Tolka bas och exponent; Beräkna potenser
-1.6|Tiopotenser och grundpotensform|Grundpotensform gör mycket stora och små tal lättare att skriva.|10³ = 1 000. 10⁻² = 0,01. Grundpotensform: a · 10ⁿ, där 1 ≤ a < 10.|4 500 = 4,5 · 10³\n0,003 = 3 · 10⁻³|Beräkna 10²; Beräkna 10⁻¹; Skriv 6 000 i grundpotensform; Skriv 0,004 i grundpotensform|Ett avstånd är 25 000 meter. Skriv det i grundpotensform.\n25 000 = 2,5 · 10 000 = 2,5 · 10⁴ meter.|Ett avstånd är 72 000 meter. Skriv det i grundpotensform.|100; 0,1; 6 · 10³; 4 · 10⁻³ / 7,2 · 10⁴ m|Använda tiopotenser; Skriva stora och små tal kort
-2.1|Förändringsfaktor|Förändringsfaktorn hjälper dig att räkna ut ett nytt pris efter en höjning eller sänkning.|Nytt värde = gammalt värde · förändringsfaktor. Ökning med p %: faktor = 1 + p/100. Minskning: faktor = 1 − p/100.|Ökning med 20 %: faktor 1,20. 100 · 1,20 = 120.\nMinskning med 20 %: faktor 0,80. 100 · 0,80 = 80.|Faktor vid 10 % ökning?; Faktor vid 25 % minskning?; 200 · 1,10; 400 · 0,75|En tröja kostar 300 kr. Priset sänks med 20 %. Vad blir det nya priset?\n80 % återstår, så faktorn är 0,80. 300 · 0,80 = 240 kr.|En jacka kostar 500 kr. Priset sänks med 30 %. Vad blir det nya priset?|1,10; 0,75; 220; 300 / 350 kr|Välja förändringsfaktor; Beräkna ett nytt värde
-2.2|Ränta|Ränta är en kostnad för att låna pengar eller en ersättning när du sparar.|Årsränta i kronor = belopp · räntesats/100. För en del av ett år: multiplicera även med antal månader/12.|1 000 kr med 3 % årsränta ger 1 000 · 0,03 = 30 kr på ett år.|1 % av 1 000 kr; 5 % av 200 kr; 3 % av 2 000 kr; 6 % av 1 000 kr under ett halvår|Du sparar 2 000 kr med 4 % årsränta. Hur mycket finns efter ett år?\nRäntan är 2 000 · 0,04 = 80 kr. Totalt: 2 000 + 80 = 2 080 kr.|Du sparar 3 000 kr med 2 % årsränta. Hur mycket finns efter ett år? Bortse från skatt.|10 kr; 10 kr; 60 kr; 30 kr / 3 060 kr|Räkna enkel ränta; Skilja mellan ränta och totalt belopp
-2.3|Procent och procentenheter|Procent betyder hundradelar. Procentenheter beskriver skillnaden mellan två procenttal.|Andel i procent = delen / det hela · 100. Förändring i procent = förändringen / ursprungsvärdet · 100. Procentenheter = nytt procenttal − gammalt procenttal.|Från 20 % till 30 %: ökning med 10 procentenheter.\nRelativ ökning: (30 − 20) / 20 · 100 = 50 %.|25 av 100 i procent; 10 av 50 i procent; Från 15 % till 20 %: antal procentenheter?; Från 40 till 50 kr: ökning i procent?|Priset går från 200 till 250 kr. Hur många procent ökar det?\nÖkningen är 50 kr. Jämför med gamla priset: 50 / 200 · 100 = 25 %.|Priset går från 80 till 100 kr. Hur många procent ökar det?|25 %; 20 %; 5 procentenheter; 25 % / 25 %|Räkna procentuell förändring; Skilja procent från procentenheter
-2.4|Koordinatsystem och grafer|En graf visar hur två storheter hänger ihop. En punkt har två koordinater.|Punkt: (x, y). Läs x vågrätt först och y lodrätt sedan. Origo = (0, 0).|Punkten (2, 3): gå 2 åt höger från origo och sedan 3 uppåt.\nPå grafen y = 2x hör x = 3 ihop med y = 6.|Vilket x har punkten (4, 1)?; Vilket y har punkten (−2, 5)?; Beräkna y om y = 2x och x = 2; Beräkna y om y = x + 3 och x = −1|En graf visar antal timmar på x-axeln och pris i kronor på y-axeln. Vad betyder punkten (2, 60)?\nFörsta talet är tiden och andra priset: 2 timmar kostar 60 kr.|En graf visar antal biobiljetter på x-axeln och pris i kronor på y-axeln. Vad betyder (3, 300)?|4; 5; 4; 2 / 3 biljetter kostar 300 kr|Läsa koordinater; Tolka en punkt i ett sammanhang
-2.5|Proportionalitet|Ett proportionellt samband har samma pris eller mängd per enhet. Dubbelt så mycket ger dubbelt så stort värde.|y = k · x. k är värdet per enhet. k = y / x när x ≠ 0. Grafen är en rät linje genom origo.|3 kg äpplen kostar 60 kr. Kilopriset är 60 / 3 = 20 kr/kg.\nPriset för x kg är y = 20x.|y = 5x, x = 2: y?; y = 5x, x = 4: y?; 4 kg kostar 80 kr: pris per kg?; 6 st kostar 42 kr: pris för 10 st?|4 likadana häften kostar 60 kr. Vad kostar 6 häften?\nEtt häfte kostar 60 / 4 = 15 kr. Sex kostar 6 · 15 = 90 kr.|3 kg päron kostar 75 kr. Vad kostar 5 kg till samma kilopris?|10; 20; 20 kr/kg; 70 kr / 125 kr|Hitta värdet per enhet; Använda proportionella samband
-2.6|Andra linjära funktioner|En linjär funktion kan ha både en fast del och en del som beror på antalet.|y = kx + m. k är förändringen i y när x ökar med 1. m är y-värdet när x = 0.|y = 10x + 30. När x = 2 blir y = 10 · 2 + 30 = 50.\nDen fasta delen är 30.|y = 2x + 1, x = 0: y?; Samma funktion, x = 3: y?; y = 5x + 20: vilket m?; y = 50 − 3x, x = 4: y?|En taxi tar 40 kr i startavgift och 15 kr per kilometer. Vad kostar 4 km?\nFast avgift + sträcka · kilometerpris: 40 + 4 · 15 = 100 kr.|En cykel kostar 30 kr att låsa upp och 10 kr per timme. Vad kostar 3 timmar?|1; 7; 20; 38 / 60 kr|Tolka k och m; Räkna med fast och rörlig kostnad
-2.7|Räta grafer|Du kan rita en rät graf genom att beräkna några punkter och dra en linje genom dem.|För y = kx + m: välj x, beräkna y och markera (x, y). Två olika punkter bestämmer linjen; en tredje kan kontrollera den.|y = x + 1 ger punkterna (0, 1), (1, 2) och (2, 3).\nLinjen går uppåt eftersom k = 1 är positivt.|y = 2x + 1, x = 0: y?; Samma funktion, x = 1: y?; Samma funktion, x = 2: y?; Går grafen y = −x + 4 uppåt eller nedåt när x ökar?|En tank innehåller 10 liter och fylls med 2 liter per minut. Vilka punkter får vi vid 0 och 3 minuter?\ny = 2x + 10. Det ger (0, 10) och (3, 16).|En tank innehåller 20 liter och fylls med 3 liter per minut. Ange punkterna vid 0 och 2 minuter.|1; 3; 5; nedåt / (0, 20) och (2, 26)|Beräkna punkter till en graf; Tolka linjens riktning
-3.1|Förenkla parentesuttryck|Att förenkla gör ett uttryck kortare utan att ändra dess värde.|Plus framför parentes: behåll tecknen. Minus framför parentes: byt alla tecken inne i parentesen.|x + (2x + 3) = 3x + 3\n5 − (x + 2) = 5 − x − 2 = 3 − x|2 + (x + 3); 4x + (x − 2); 7 − (x + 3); 3x − (x − 4)|Du har x kr och får ytterligare (x + 10) kr. Hur mycket har du?\nx + (x + 10) = 2x + 10 kr.|Du har 100 kr och handlar för (x + 20) kr. Skriv ett förenklat uttryck för pengarna som är kvar.|x + 5; 5x − 2; 4 − x; 2x + 4 / 80 − x kr|Ta bort parenteser; Samla termer av samma sort
-3.2|Multiplikation med parentesuttryck|När ett tal står framför en parentes multipliceras varje term i parentesen med talet.|a(b + c) = ab + ac. a(b − c) = ab − ac.|3(x + 2) = 3x + 6\n2(3x − 1) = 6x − 2|2(x + 1); 3(x + 4); 4(2x − 1); 2(x + 3) + x|Tre vänner köper var sin biljett för x kr och var sin dryck för 20 kr. Vad kostar allt?\nVarje person betalar x + 20. Totalt: 3(x + 20) = 3x + 60 kr.|Fyra personer betalar x kr var i inträde och 10 kr var för fika. Skriv och förenkla totalkostnaden.|2x + 2; 3x + 12; 8x − 4; 3x + 6 / 4(x + 10) = 4x + 40 kr|Multiplicera in i parenteser; Beskriva en gemensam kostnad
-3.3|Beräkna värdet av ett uttryck|Ett uttryck får ett bestämt värde när du vet vilket tal bokstaven står för.|Byt ut bokstaven mot dess värde. Följ sedan räkneordningen. Skriv gärna negativa värden inom parentes.|Om x = 4: 3x + 2 = 3 · 4 + 2 = 14.\nOm x = −2: x² = (−2)² = 4.|x + 3 när x = 2; 2x när x = 5; 3x − 4 när x = 3; x² + 2 när x = −3|En biljett kostar 5x + 20 kr, där x är antal zoner. Vad kostar 3 zoner?\nSätt in x = 3: 5 · 3 + 20 = 35 kr.|Ett paket kostar 4x + 15 kr, där x är vikten i kg. Vad kostar ett paket på 5 kg?|5; 10; 5; 11 / 35 kr|Sätta in tal i uttryck; Följa räkneordningen
-3.4|Formler|En formel beskriver ett samband. Du kan använda den med olika tal.|Sträcka: s = v · t. v = hastighet, t = tid. Använd enheter som passar ihop, till exempel km/h och timmar.|v = 50 km/h och t = 2 h ger s = 50 · 2 = 100 km.|s = vt, v = 10 och t = 2: s?; A = bh, b = 4 och h = 3: A?; O = 2a + 2b, a = 3 och b = 5: O?; s = vt, v = 60 och t = 0,5: s?|Du cyklar i 12 km/h i 2 timmar. Hur långt kommer du?\nVi söker sträckan. s = v · t = 12 · 2 = 24 km.|Du går i 4 km/h i 1,5 timmar. Hur långt går du?|20; 12; 16; 30 / 6 km|Välja och använda en formel; Hålla reda på enheter
-3.5|Mönster|Ett mönster hjälper oss att beskriva hur en talföljd fortsätter och hitta ett senare tal.|Om samma tal läggs till varje gång: tal på plats n = första talet + (n − 1) · ökningen.|3, 5, 7, 9, ... ökar med 2.\nTalet på plats n är 3 + (n − 1) · 2 = 2n + 1.|Nästa tal: 2, 4, 6, ...; Nästa tal: 5, 8, 11, ...; Tal på plats 4 om regeln är 3n?; Tal på plats 10 om regeln är 2n + 1?|Bord 1 har 4 platser. Varje nytt bord ger 2 fler platser. Hur många platser har 5 bord?\nFyra extra bord ger 4 · 2 platser. Totalt: 4 + 4 · 2 = 12.|Första figuren har 5 prickar. Varje ny figur har 3 fler. Hur många prickar har figur 4?|8; 14; 12; 21 / 14 prickar|Hitta en regel; Använda platsnummer i ett mönster
-3.6|Ekvationer med parenteser|En ekvation är en likhet med ett okänt tal. Båda sidor ska fortsätta vara lika.|Multiplicera först in i parentesen. Gör sedan samma operation på båda sidor. Kontrollera genom att sätta in svaret.|2(x + 3) = 14 → 2x + 6 = 14 → 2x = 8 → x = 4.\nKontroll: 2(4 + 3) = 14.|x + 3 = 8; 2x = 12; 2(x + 1) = 10; 3(x − 2) = 15|Två lika påsar innehåller x kulor och 3 extra kulor var. Totalt är det 18 kulor. Hur många är x?\n2(x + 3) = 18. Dividera med 2: x + 3 = 9. Alltså x = 6.|Tre lika lådor innehåller x pennor och 2 extra pennor var. Totalt är det 21 pennor. Hur många är x?|x = 5; x = 6; x = 4; x = 7 / x = 5|Lösa ekvationer; Kontrollera ett svar
-4.1|Cirklar|Cirkelns omkrets är längden runt kanten. Arean är ytan inuti.|d = 2r. Omkrets O = 2πr = πd. Area A = πr². r = radie, d = diameter. Använd π ≈ 3,14.|r = 3 cm ger d = 6 cm.\nO ≈ 2 · 3,14 · 3 = 18,84 cm. A ≈ 3,14 · 3² = 28,26 cm².|r = 2 cm: d?; d = 10 cm: r?; d = 4 cm: O?; r = 2 cm: A?|Ett runt bord har diametern 1 m. Hur långt är det runt kanten?\nVi söker omkretsen: O = πd ≈ 3,14 · 1 = 3,14 m.|En rund matta har radien 1 m. Hur stor är dess area?|4 cm; 5 cm; ≈ 12,56 cm; ≈ 12,56 cm² / ≈ 3,14 m²|Skilja radie från diameter; Beräkna omkrets och area
-4.2|Cirkelbågar och cirkelsektorer|En sektor är en del av en cirkel, som en tårtbit. Bågen är den böjda kanten.|Andel av cirkeln = v/360°. Båglängd = (v/360°) · 2πr. Sektorns area = (v/360°) · πr².|En sektor med vinkeln 90° är 90/360 = 1/4 av cirkeln.\nOm hela cirkelns area är 40 cm² är sektorns area 10 cm².|180°: andel av cirkeln?; 90°: andel av cirkeln?; Halvcirkel av en cirkel med area 30 cm²: area?; En fjärdedel av omkretsen 24 cm: båglängd?|En cirkel har arean 60 cm². En sektor har vinkeln 120°. Hur stor är sektorns area?\n120/360 = 1/3. Arean är 60 / 3 = 20 cm².|En cirkel har omkretsen 40 cm. Hur lång är bågen som hör till en sektor på 90°?|1/2; 1/4; 15 cm²; 6 cm / 10 cm|Hitta cirkelns andel; Beräkna båglängd och sektorarea
-4.3|Enheter och volym|Volym beskriver hur mycket något rymmer. Kubikenheter och liter mäter volym.|1 liter = 1 dm³. 1 ml = 1 cm³. 1 m³ = 1 000 liter. 1 liter = 1 000 ml.|2,5 liter = 2 500 ml.\n500 cm³ = 500 ml = 0,5 liter.|2 liter i ml; 3 dm³ i liter; 750 ml i liter; 0,2 m³ i liter|En flaska rymmer 1,5 liter. Hur många glas på 250 ml kan fyllas?\n1,5 liter = 1 500 ml. Antal glas: 1 500 / 250 = 6.|En kanna innehåller 2 liter. Hur många glas på 200 ml kan fyllas?|2 000 ml; 3 liter; 0,75 liter; 200 liter / 10 glas|Omvandla volymenheter; Använda samma enhet före beräkning
-4.4|Prisma och cylinder|Prismor och cylindrar har samma tvärsnitt hela vägen. Volymen fås av basytan gånger höjden.|V = B · h. B = basytans area. Rätblock: V = längd · bredd · höjd. Cylinder: V = πr²h.|Rätblock: 2 · 3 · 4 = 24 cm³.\nCylinder med r = 2 och h = 3 cm: V ≈ 3,14 · 2² · 3 = 37,68 cm³.|B = 5 cm², h = 2 cm: V?; Rätblock 2 × 2 × 3 cm: V?; B = 12 cm², h = 5 cm: V?; Cylinder r = 1 cm, h = 10 cm: V?|En låda är 4 dm lång, 2 dm bred och 3 dm hög. Hur många liter rymmer den?\nV = 4 · 2 · 3 = 24 dm³. Eftersom 1 dm³ = 1 liter rymmer den 24 liter.|Ett akvarium är 5 dm långt, 2 dm brett och 3 dm högt. Hur många liter rymmer det till kanten?|10 cm³; 12 cm³; 60 cm³; ≈ 31,4 cm³ / 30 liter|Beräkna volym; Koppla dm³ till liter
-4.5|Pyramider och koner|En pyramid eller kon rymmer en tredjedel av ett prisma eller en cylinder med samma basyta och höjd.|V = B · h / 3. Kon: V = πr²h / 3. Höjden mäts vinkelrätt från basytan till spetsen.|En pyramid med B = 12 cm² och h = 5 cm har\nV = 12 · 5 / 3 = 20 cm³.|B = 3 cm², h = 3 cm: V?; B = 12 cm², h = 3 cm: V?; B = 20 cm², h = 6 cm: V?; Kon med r = 1 cm, h = 3 cm: V?|En pyramid har en kvadratisk bas med sidan 4 cm och höjden 6 cm. Beräkna volymen.\nB = 4 · 4 = 16 cm². V = 16 · 6 / 3 = 32 cm³.|En pyramid har kvadratisk bas med sidan 3 cm och höjden 4 cm. Beräkna volymen.|3 cm³; 12 cm³; 40 cm³; ≈ 3,14 cm³ / 12 cm³|Beräkna basytan; Beräkna pyramidens och konens volym
-4.6|Pythagoras sats|I en rätvinklig triangel kan två kända sidor hjälpa oss att beräkna den tredje.|a² + b² = c². a och b är kateter. c är hypotenusan, sidan mitt emot den räta vinkeln och triangelns längsta sida.|Kateterna är 3 och 4 cm: c² = 3² + 4² = 25.\nc = √25 = 5 cm.|√9; √64; Kateter 6 och 8 cm: hypotenusan?; Hypotenusa 13 cm och en katet 5 cm: andra kateten?|En stege står 3 m från väggen och når 4 m upp. Hur lång är stegen?\nStegen är hypotenusan: c = √(3² + 4²) = √25 = 5 m.|En rektangel har sidorna 5 och 12 cm. Hur lång är diagonalen? Tips: diagonalen är hypotenusa.|3; 8; 10 cm; 12 cm / 13 cm|Känna igen hypotenusan; Använda Pythagoras sats
-5.1|Sannolikhet|Sannolikhet beskriver chansen att något händer. 0 betyder omöjligt och 1 betyder säkert.|P = antal gynnsamma utfall / antal möjliga utfall, när alla utfall är lika sannolika. 1/2 = 0,5 = 50 %.|En vanlig tärning har sex lika sannolika utfall.\nP(sexa) = 1/6. P(jämnt tal) = 3/6 = 1/2.|Mynt: P(krona)?; Tärning: P(etta)?; Tärning: P(tal större än 4)?; 3 röda och 2 blå kulor: P(blå)?|En påse har 4 röda och 6 blå kulor. Du drar en slumpmässigt. Vad är P(röd)?\n4 av 10 kulor är röda: P = 4/10 = 40 %.|En påse har 3 gröna och 9 gula kulor. Vad är sannolikheten att dra en grön?|1/2; 1/6; 1/3; 2/5 / 3/12 = 1/4 = 25 %|Räkna gynnsamma och möjliga utfall; Uttrycka en chans i bråk och procent
-5.2|Sannolikhet i flera steg|När flera händelser följer på varandra behöver vi hålla reda på chansen i varje steg.|P(A och B) = P(A) · P(B efter A). Vid oberoende händelser ändrar första steget inte chansen i nästa.|Två myntkast: P(krona båda gångerna) = (1/2) · (1/2) = 1/4.\nTrädgren: krona → krona.|(1/2) · (1/2); (1/2) · (1/4); Två tärningskast: P(sexa båda gångerna)?; Tre myntkast: P(krona varje gång)?|En påse har 2 röda och 2 blå kulor. Du drar två utan återläggning. Vad är P(två röda)?\nFörsta: 2/4. Sedan återstår 1 röd av 3. P = (2/4) · (1/3) = 1/6.|En påse har 3 röda och 2 blå kulor. Du drar två utan återläggning. Vad är P(två röda)?|1/4; 1/8; 1/36; 1/8 / (3/5) · (2/4) = 3/10 = 30 %|Multiplicera sannolikheter; Se hur återläggning påverkar chansen
-5.3|Beräkningar med sannolikheter|Ibland är det enklare att räkna på det som inte händer. Ibland behöver flera möjliga vägar läggas ihop.|P(inte A) = 1 − P(A). För händelser som inte kan inträffa samtidigt: P(A eller B) = P(A) + P(B).|P(inte sexa) = 1 − 1/6 = 5/6.\nP(etta eller tvåa) = 1/6 + 1/6 = 1/3.|1 − 1/2; 1 − 1/4; Tärning: P(etta eller sexa)?; Tärning: P(inte etta)?|Du kastar ett mynt två gånger. Vad är P(minst en krona)?\nMotsatsen är ingen krona, alltså två klavar: 1/4. Sökta chansen är 1 − 1/4 = 3/4.|Två snurror har vardera hälften rött och hälften blått. De snurras oberoende. Vad är P(minst ett rött)?|1/2; 3/4; 1/3; 5/6 / 3/4 = 75 %|Räkna med motsatsen; Lägga ihop skilda möjligheter
-5.4|Sannolikhet och statistik|Försök och observationer kan användas för att uppskatta sannolikheter.|Relativ frekvens = antal gånger något händer / antal försök. Uppskattat antal = sannolikhet · antal försök.|Ett mynt ger krona 18 gånger på 40 kast.\nRelativ frekvens = 18/40 = 0,45 = 45 %. Det behöver inte bli exakt 50 %.|5/10 i procent; 12/20 i procent; 25 % av 40; Förväntat antal sexor på 60 tärningskast?|En snurra ger rött 30 gånger på 100 försök. Uppskatta antalet röda på 200 nya försök.\nAndelen är 30 %. Uppskattning: 0,30 · 200 = 60. Utfallet kan bli ett annat.|En snurra ger blått 20 gånger på 50 försök. Uppskatta antalet blå på 100 nya försök.|50 %; 60 %; 10; 10 / cirka 40 blå|Beräkna relativ frekvens; Göra en uppskattning från försöksdata
-5.5|Kombinatorik|Kombinatorik hjälper oss att räkna antalet möjliga val, till exempel klädkombinationer.|Antal kombinationer = antal val i steg 1 · antal val i steg 2 · ... när varje val kan kombineras med alla val i nästa steg.|3 tröjor och 2 byxor ger 3 · 2 = 6 kombinationer.|2 · 3; 4 tröjor och 3 byxor: kombinationer?; 2 förrätter och 5 huvudrätter: kombinationer?; Kod med två siffror 0–9, upprepning tillåten: antal koder?|Du väljer en glassort och en topping. Det finns 4 sorter och 3 toppingar. Hur många val?\nVarje sort kan få tre toppingar: 4 · 3 = 12.|Det finns 3 smörgåsar, 2 drycker och 2 frukter. Hur många kombinationer med en av varje finns?|6; 12; 10; 100 / 3 · 2 · 2 = 12|Räkna val i flera steg; Använda multiplikationsprincipen
-5.6|Lägesmått och spridningsmått|Lägesmått beskriver var värdena ligger. Spridningsmått beskriver hur utspridda de är.|Medelvärde = summan / antalet värden. Median = mittenvärdet efter sortering; vid jämnt antal: medelvärdet av de två i mitten. Typvärde = vanligaste värdet. Variationsbredd = största − minsta.|För 2, 3, 3, 8: medelvärde = 16/4 = 4.\nMedian = 3. Typvärde = 3. Variationsbredd = 8 − 2 = 6.|Medelvärde av 2 och 6?; Median av 7, 1, 3?; Typvärde av 2, 5, 5, 7?; Variationsbredd för 3, 4, 10?|Fem resor tar 5, 6, 6, 7 och 16 minuter. Vilket lägesmått visar bäst en vanlig restid?\nMedianen är 6 minuter. Medelvärdet är 40/5 = 8. Den ovanligt långa resan höjer medelvärdet.|Fyra resor tar 4, 5, 5 och 18 minuter. Beräkna median och medelvärde. Vilket beskriver bäst en vanlig restid?|4; 3; 5; 7 / Median 5 min. Medelvärde 8 min. Medianen beskriver bäst en vanlig restid.|Beräkna lägesmått och variationsbredd; Tolka ett avvikande värde'''
-
-rows=[line.replace(r'\n', '\n').split('|') for line in raw.splitlines()]
-assert all(len(r)==10 for r in rows)
-assert len(rows)==31
-W,H=A4
-path='output/pdf/Modul_8_studieblad.pdf'
-c=canvas.Canvas(path,pagesize=A4)
-c.setTitle('Modul 8 - korta studieblad med facit')
-style=ParagraphStyle('p',fontName='D',fontSize=10.5,leading=15)
-def para(text,x,y,width=505,bold=False):
-    st=ParagraphStyle('b',parent=style,fontName='DB') if bold else style
-    p=Paragraph(text.replace('\n','<br/>'),st)
-    _,h=p.wrap(width,1000);p.drawOn(c,x,y-h);return y-h
-def label(text,y):
-    c.setFont('DB',10);c.drawString(45,y,text);return y-12
-def grid(y,height):
-    c.setStrokeColor(colors.HexColor('#d7d7d7'));c.setLineWidth(.35)
-    step=14.17
-    for i in range(int(505/step)+1):
-        xx=45+i*step;c.line(xx,y,xx,y-height)
-    for i in range(int(height/step)+1):
-        yy=y-i*step;c.line(45,yy,550,yy)
-    c.setStrokeColor(colors.black)
-def footer(n,txt):
-    c.setFont('D',8);c.setFillColor(colors.HexColor('#555555'));c.drawString(45,27,txt);c.drawRightString(550,27,str(n));c.setFillColor(colors.black)
-for i,r in enumerate(rows,1):
-    id,title,intro,rules,worked,calcs,tw,te,answers,trained=r
-    c.setFont('D',9);c.drawString(45,807,'MODUL 8  /  '+id);c.drawRightString(550,807,'Namn: ____________________')
-    c.setFont('DB',18);c.drawString(45,776,title)
-    para(intro,45,756)
-    c.setFillColor(colors.HexColor('#f1f1f1'));c.roundRect(40,620,515,94,5,fill=1,stroke=0);c.setFillColor(colors.black)
-    para('Regel / formel',50,705,bold=True)
-    end=para(rules,50,683,485);assert end>623,(id,end)
-    label('Räkneexempel',602);end=para(worked,45,586);assert end>530,(id,end)
-    label('Räkna själv',513)
-    qs=calcs.split('; ')
-    assert len(qs)==4,(id,qs)
-    for j,q in enumerate(qs):
-        col=j%2;rr=j//2;x=45+col*260;y=493-rr*47
-        end=para(f'{chr(97+j)}) {q.strip()}',x,y,242);assert end>y-43,(id,q)
-    grid(396,57)
-    label('Textuppgift - så kan du tänka',317)
-    end=para(tw,45,301);assert end>219,(id,end)
-    label('Prova själv',202)
-    end=para(te,45,186);assert end>137,(id,end)
-    grid(132,57)
-    c.setFont('DB',9);c.drawString(45,65,'Du har tränat på:')
-    c.setFont('D',9)
-    
-    for k,item in enumerate(trained.split('; ')):
-        c.drawString(45,53-k*12,'• '+item)
-    footer(i,'Ett blad i taget. Visa gärna dina mellanled. Facit finns efter studiebladen.')
-    c.showPage()
-# Compact answer section, one page per chapter; same IDs as worksheets.
-for ch in range(1,6):
-    c.setFont('DB',20);c.drawString(45,790,f'Facit - kapitel {ch}')
-    para('Svar till a–d står i ordning. Därefter följer svaret på textövningen.',45,767)
-    y=721
-    for r in rows:
-        if not r[0].startswith(str(ch)+'.'):continue
-        calc,txt=r[8].split(' / ')
-        y=para(r[0]+'  '+r[1],45,y,bold=True)-6
-        y=para('a–d: '+calc+'<br/>Textövning: '+txt,45,y)-22
-    assert y>65,(ch,y)
-    footer(31+ch,'Avrundning i cirkeluppgifter: π ≈ 3,14. Likvärdiga svar går också bra.')
-    c.showPage()
-c.save()
-print(path)
+ROOT=Path(__file__).resolve().parent.parent
+OUT=ROOT/'output/pdf';OUT.mkdir(parents=True,exist_ok=True)
+ROWS=json.loads((ROOT/'content/worksheets.json').read_text(encoding='utf-8'))
+pdfmetrics.registerFont(TTFont('D',findfont(FontProperties(family='DejaVu Sans'))))
+pdfmetrics.registerFont(TTFont('DB',findfont(FontProperties(family='DejaVu Sans',weight='bold'))))
+STYLE=ParagraphStyle('body',fontName='D',fontSize=10.5,leading=15)
+matplotlib.rcParams['mathtext.fontset']='dejavusans'
+PARSER=MathTextParser('path');FONTS={};CHECKS=[];C=None;CURRENT=''
+def plain(s,x,y,width=505,size=10.5,bold=False,min_y=0):
+    st=ParagraphStyle('p',parent=STYLE,fontSize=size,leading=size+4,fontName='DB' if bold else 'D')
+    p=Paragraph(escape(s).replace('\n','<br/>'),st);_,h=p.wrap(width,1000)
+    assert y-h>=min_y,f'Text overflow {CURRENT}: {s[:45]} ends {y-h:.1f}, limit {min_y}'
+    p.drawOn(C,x,y-h);CHECKS.append(dict(id=CURRENT,bottom=y-h,limit=min_y));return y-h
+def heading(s,x,y,size=11):C.setFont('DB',size);C.drawString(x,y,s)
+def note(s,x,y,size=9):C.setFont('D',size);C.drawString(x,y,s)
+def line(x1,y1,x2,y2,width=.8):C.setLineWidth(width);C.line(x1,y1,x2,y2)
+def arrow(x1,y1,x2,y2):
+    line(x1,y1,x2,y2);a=math.atan2(y2-y1,x2-x1)
+    for d in [-.5,.5]:line(x2,y2,x2-5*math.cos(a+d),y2-5*math.sin(a+d))
+def dot(x,y,filled=True,r=4):C.circle(x,y,r,stroke=1,fill=int(filled))
+@lru_cache(maxsize=512)
+def parse_math(s,size):
+    s=re.sub(r'\\sqrt(\d)',r'\\sqrt{\1}',s)
+    s=re.sub(r'\\frac(\d)(\d)',r'\\frac{\1}{\2}',s.strip('$'))
+    s=re.sub(r'\\frac(\d)\{',r'\\frac{\1}{',s)
+    return PARSER.parse('$'+s+'$',dpi=72,prop=FontProperties(size=size))
+def formula(s,x,top,maxwidth=240,size=12):
+    p=parse_math(s,size)
+    if p.width>maxwidth:
+        size=size*maxwidth/p.width
+        assert size>=9.2,f'Formula too wide {CURRENT}: {s}'
+        p=parse_math(s,size)
+    baseline=top-float(p.height)+float(p.depth)
+    for font,fs,num,ox,oy in p.glyphs:
+        if font.fname not in FONTS:
+            name='M'+str(len(FONTS));pdfmetrics.registerFont(TTFont(name,font.fname));FONTS[font.fname]=name
+        C.setFont(FONTS[font.fname],fs);C.drawString(x+float(ox),baseline+float(oy),chr(num))
+    for rx,ry,rw,rh in p.rects:C.rect(x+float(rx),baseline+float(ry),float(rw),float(rh),fill=1,stroke=0)
+    return top-float(p.height)
+def lines(items,x,y,width=240,size=10.5,minimum=0):
+    for s in items:
+        y=(formula(s,x,y,width,size+1) if s.startswith('$') else plain(s,x,y,width,size,min_y=minimum))-4
+    assert y>=minimum,f'Block overflow {CURRENT}: {y} < {minimum}'
+    return y
+def writing_grid(x,y,w,h,step=14.17):
+    C.setStrokeColor(colors.HexColor('#d4d4d4'));C.setLineWidth(.35)
+    for i in range(int(w/step)+1):xx=x+i*step;C.line(xx,y,xx,y-h)
+    for i in range(int(h/step)+1):yy=y-i*step;C.line(x,yy,x+w,yy)
+    C.rect(x,y-h,w,h,stroke=1,fill=0);C.setStrokeColor(colors.black)
+def axes(x,y,w,h,xmax=5,ymax=60,xlabel='Tid (timmar)',ylabel='Pris (kr)',graph=None,read=None):
+    def X(v):return x+w*v/xmax
+    def Y(v):return y+h*v/ymax
+    C.setStrokeColor(colors.HexColor('#d9d9d9'));C.setLineWidth(.35)
+    for i in range(xmax*2+1):C.line(X(i/2),y,X(i/2),y+h)
+    for i in range(0,ymax+1,5 if ymax==60 else 1):C.line(x,Y(i),x+w,Y(i))
+    C.setStrokeColor(colors.black);arrow(x,y,x+w+7,y);arrow(x,y,x,y+h+6)
+    for i in range(xmax+1):C.setFont('D',8);C.drawCentredString(X(i),y-13,str(i))
+    for i in range(0,ymax+1,10 if ymax==60 else 1):C.setFont('D',8);C.drawRightString(x-6,Y(i)-3,str(i))
+    heading(ylabel,x-14,y+h+16,9);C.setFont('DB',9);C.drawRightString(x+w,y-30,xlabel)
+    if graph:
+        k,m=graph;end=min(xmax,(ymax-m)/k);line(X(0),Y(m),X(end),Y(k*end+m),1.5)
+    if read:
+        a,b=read;C.setDash(3,3);line(X(a),y,X(a),Y(b));line(X(a),Y(b),x,Y(b));C.setDash()
+        C.circle(X(a),Y(b),2.5,stroke=0,fill=1);heading(f'({a}, {b})',X(a)+5,Y(b)+5,9)
+def table(x,y,width,rows,colwidths=None,rowh=26):
+    cw=colwidths or [width/len(rows[0])]*len(rows[0]);C.setStrokeColor(colors.HexColor('#aaaaaa'));C.setLineWidth(.5)
+    for k,row in enumerate(rows):
+        xx=x;yy=y-k*rowh
+        for j,v in enumerate(row):
+            C.rect(xx,yy-rowh,cw[j],rowh,stroke=1,fill=0);plain(str(v),xx+6,yy-5,cw[j]-10,size=9);xx+=cw[j]
+    C.setStrokeColor(colors.black)
+def figure(id):
+    x,y,w,h=322,553,218,138
+    if id=='1.1':
+        heading('−2 + 5 på tallinjen',x,y+135,10);yy=y+58;arrow(x,yy,x+w,yy)
+        for n in range(-4,5):
+            xx=x+12+(n+4)*23;line(xx,yy-4,xx,yy+4);note(str(n),xx-5,yy-20)
+        a=x+58;b=x+173;dot(a,yy,True,2);dot(b,yy,True,2);arrow(a,yy+23,b,yy+23);note('+5',a+46,yy+33)
+    elif id=='1.2':
+        heading('Tecken i gånger och delat',x,y+135,10)
+        table(x,y+112,w,[['Tecken','Svar'],['+ och +','+'],['− och −','+'],['+ och −','−'],['− och +','−']],rowh=22)
+    elif id=='1.3':
+        heading('Räkna i denna ordning',x,y+135,10)
+        table(x,y+114,w,[['1','Parenteser'],['2','Potenser'],['3','Gånger och delat'],['4','Plus och minus']],colwidths=[28,190],rowh=26)
+    elif id=='1.4':
+        heading('Hur många fjärdedelar?',x,y+135,10);note('Hela remsan är 1 liter.',x,y+113)
+        for j in range(4):
+            C.setFillColor(colors.HexColor('#bbbbbb') if j<2 else colors.white);C.rect(x+j*52,y+58,52,28,stroke=1,fill=1)
+        C.setFillColor(colors.black);note('1/4',x+17,y+40);note('1/4',x+69,y+40);note('Det grå är 1/2 liter: två fjärdedelar.',x,y+13,8.5)
+    elif id=='1.5':
+        heading('Samma faktor tre gånger',x,y+135,10);formula(r'2^3',x+72,y+102,size=22)
+        formula(r'2\cdot2\cdot2=8',x+25,y+53,maxwidth=200,size=17);note('Bas: 2. Exponent: 3.',x+35,y+3)
+    elif id=='1.6':
+        heading('Tiopotenser',x,y+135,10);table(x,y+114,w,[['Potens','Värde'],['10³','1 000'],['10²','100'],['10⁻¹','0,1'],['10⁻²','0,01']],rowh=22)
+    elif id=='2.1':
+        heading('20 % rabatt på 100 kr',x,y+135,10)
+        C.setFillColor(colors.HexColor('#bbbbbb'));C.rect(x,y+61,w*.8,30,fill=1,stroke=1)
+        C.setFillColor(colors.white);C.rect(x+w*.8,y+61,w*.2,30,fill=1,stroke=1);C.setFillColor(colors.black)
+        note('80 % kvar',x+37,y+72);note('20 %',x+w*.8+4,y+72,8);note('80 % = 0,80',x+57,y+30,11)
+    elif id=='2.2':
+        heading('Efter ett år',x,y+135,10);table(x,y+111,w,[['Sparat','1 000 kr'],['Ränta 3 %','30 kr'],['Totalt','1 030 kr']],rowh=30)
+    elif id=='2.3':
+        heading('Två olika jämförelser',x,y+135,10)
+        for j,(v,lab) in enumerate([(20,'20 %'),(30,'30 %')]):
+            yy=y+75-j*38;C.setFillColor(colors.HexColor('#bbbbbb'));C.rect(x+48,yy,w*v/100,22,fill=1,stroke=1);C.setFillColor(colors.black);note(lab,x,yy+7)
+        note('Skillnad: 10 procentenheter.',x,y+9);note('Relativ ökning: 10/20 = 50 %.',x,y-9)
+    elif id in ('2.4','2.6','2.7'):
+        if id=='2.4':axes(x,y+3,w,h,graph=(10,0),read=(2,20))
+        elif id=='2.6':axes(x,y+3,w,h,graph=(10,20))
+        else:axes(x,y+3,w,h,xmax=5,ymax=6,xlabel='x',ylabel='y',graph=(1,1),read=(2,3))
+    elif id=='2.5':
+        heading('Samma styckpris: 5 kr',x,y+135,10);table(x,y+110,w,[['Antal x','Pris y (kr)'],['0','0'],['1','5'],['2','10'],['3','15']],rowh=22)
+    elif id=='3.1':
+        heading('Minus gäller hela parentesen',x,y+135,10);formula(r'5-(x+2)',x+30,y+99,maxwidth=200,size=19)
+        arrow(x+84,y+68,x+84,y+47);formula(r'5-x-2',x+32,y+35,maxwidth=200,size=19)
+    elif id=='3.2':
+        heading('Tre lika delar',x,y+135,10)
+        for j in range(3):
+            yy=y+85-j*34;C.rect(x,yy,145,28);C.rect(x+145,yy,65,28);note('x',x+68,yy+9,11);note('2',x+173,yy+9,11)
+        note('3x och 3 · 2 blir 3x + 6.',x,y-10)
+    elif id=='3.3':
+        heading('Samla lika termer',x,y+135,10);formula(r'2x+x+1',x+30,y+100,size=19)
+        arrow(x+85,y+70,x+85,y+49);formula(r'3x+1',x+50,y+38,size=19);note('När x = 2 får vi 3 · 2 + 1 = 7.',x,y-8)
+    elif id=='3.4':
+        heading('Sträcka = hastighet × tid',x,y+135,10);arrow(x+8,y+65,x+w-8,y+65)
+        for j,t in enumerate(['0 km','10 km','20 km']):
+            xx=x+8+j*99;line(xx,y+60,xx,y+70);note(t,xx-8,y+41)
+        note('0 h',x,y+85);note('1 h',x+99,y+85);note('2 h',x+198,y+85);note('10 km varje timme.',x+40,y+4)
+    elif id=='3.5':
+        heading('Platsnummer och tal',x,y+135,10);table(x,y+112,w,[['Plats n','1','2','3','4'],['Tal','3','5','7','9']],colwidths=[66,38,38,38,38],rowh=32);note('Ökning: +2 för varje ny plats.',x,y+22)
+    elif id=='3.6':
+        heading('Båda sidor är lika',x,y+135,10);line(x+10,y+87,x+w-10,y+87,1.3)
+        p=C.beginPath();p.moveTo(x+109,y+87);p.lineTo(x+84,y+52);p.lineTo(x+134,y+52);p.close();C.drawPath(p)
+        for j,txt in enumerate(['2(x + 3)','14']):
+            xx=x+15+j*137;C.rect(xx,y+95,70,28);note(txt,xx+6,y+105,10)
+        note('Dela båda sidor med 2.',x+22,y+18)
+    elif id=='4.1':
+        heading('Radie och diameter',x,y+135,10);cx,cy=x+108,y+57;r=49;C.circle(cx,cy,r)
+        line(cx-r,cy,cx+r,cy);dot(cx,cy,True,2);line(cx,cy,cx,cy+r);note('r',cx+5,cy+25,11);note('d',cx-4,cy-16,11)
+    elif id=='4.2':
+        heading('90° är en fjärdedel',x,y+135,10);cx,cy=x+108,y+53;r=50
+        C.setFillColor(colors.HexColor('#cccccc'));C.wedge(cx-r,cy-r,cx+r,cy+r,0,90,fill=1,stroke=1);C.setFillColor(colors.black)
+        C.circle(cx,cy,r);line(cx,cy,cx+r,cy);line(cx,cy,cx,cy+r);note('90°',cx+6,cy+13);note('båge',cx+48,cy+45)
+    elif id in ('4.3','4.4'):
+        heading('1 dm³ = 1 liter' if id=='4.3' else 'Basyta gånger höjd',x,y+135,10)
+        a,b,s=x+30,y+17,84;dx,dy=42,30;C.rect(a,b,s,s)
+        for ax,ay in [(a,b+s),(a+s,b+s),(a+s,b)]:line(ax,ay,ax+dx,ay+dy)
+        line(a+dx,b+s+dy,a+s+dx,b+s+dy);line(a+s+dx,b+dy,a+s+dx,b+s+dy)
+        if id=='4.3':note('1 dm',a+22,b-15);note('1 dm',a+s+dx+5,b+50);note('1 dm',a+s+10,b-1)
+        else:note('2 cm',a+23,b-15);note('4 cm',a+s+dx+5,b+50);note('3 cm',a+s+10,b-1)
+    elif id=='4.5':
+        heading('Pyramid: höjden går rakt ned',x,y+135,9.5)
+        a=(x+25,y+15);b=(x+159,y+15);d=(x+62,y+52);e=(x+196,y+52);t=(x+110,y+116)
+        for p,q in [(a,b),(b,e),(e,d),(d,a),(t,a),(t,b),(t,e),(t,d)]:line(*p,*q)
+        C.setDash(3,3);line(t[0],t[1],t[0],y+34);C.setDash();note('h',t[0]+5,y+77,11);note('B = basytans area',x+18,y-7)
+    elif id=='4.6':
+        heading('Rätvinklig triangel',x,y+135,10);a=(x+35,y+15);b=(x+35,y+110);d=(x+180,y+15)
+        for p,q in [(a,b),(b,d),(d,a)]:line(*p,*q,1.2)
+        line(a[0]+11,a[1],a[0]+11,a[1]+11);line(a[0]+11,a[1]+11,a[0],a[1]+11)
+        note('a',x+15,y+61,12);note('b',x+100,y-2,12);note('c',x+115,y+72,12);note('c = hypotenusan',x+69,y+104,8)
+    elif id=='5.1':
+        heading('4 röda och 6 blå kulor',x,y+135,10)
+        for i in range(10):
+            xx=x+23+(i%5)*42;yy=y+87-(i//5)*47
+            C.setFillColor(colors.HexColor('#bbbbbb'))
+            dot(xx,yy,i<4,12)
+            C.setFillColor(colors.black);note('R' if i<4 else 'B',xx-3,yy-3,8)
+        note('Bokstäver visar färg även i svartvitt.',x,y+2,8)
+    elif id=='5.2':
+        heading('Två myntkast',x,y+135,10);root=(x+5,y+63)
+        for j,txt in enumerate(['K','L']):
+            end=(x+95,y+103-j*80);line(*root,*end);note('1/2',x+37,y+91-j*51,8);note(txt,*end)
+            for k,txt2 in enumerate(['K','L']):
+                end2=(x+192,end[1]+18-k*36);line(end[0]+12,end[1],*end2);note(txt+txt2,end2[0]+2,end2[1]-3,8);note('1/2',x+142,end2[1]+2,7)
+        note('K = krona. L = klave.',x,y-4)
+    elif id=='5.3':
+        heading('Två myntkast: fyra möjligheter',x,y+135,9);table(x,y+112,w,[['','K','L'],['K','KK','KL'],['L','LK','LL']],colwidths=[48,85,85],rowh=30);note('Minst en krona: KK, KL eller LK.',x,y+3,8.5)
+    elif id=='5.4':
+        heading('18 kronor på 40 kast',x,y+135,10)
+        C.setFillColor(colors.HexColor('#bbbbbb'));C.rect(x,y+65,w*.45,28,fill=1,stroke=1);C.setFillColor(colors.white);C.rect(x+w*.45,y+65,w*.55,28,fill=1,stroke=1);C.setFillColor(colors.black)
+        note('18 kronor',x+12,y+75);note('22 klavar',x+117,y+75);note('Andel kronor: 18/40 = 45 %.',x+9,y+31)
+    elif id=='5.5':
+        heading('2 tröjor och 3 byxor',x,y+135,10)
+        for j,txt in enumerate(['T1','T2']):
+            xx,yy=x+18,y+98-j*75;note(txt,xx,yy)
+            for k in range(3):
+                ey=yy+20-k*20;line(xx+20,yy+3,x+134,ey+3);note(f'B{k+1}',x+140,ey)
+        note('Varje tröja har tre val av byxor.',x,y-7,8.5)
+    elif id=='5.6':
+        heading('Sortera talen först',x,y+135,10)
+        for j,v in enumerate([2,3,3,8]):
+            xx=x+25+j*49;C.rect(xx-5,y+66,31,30);note(str(v),xx+5,y+75,12)
+        note('De två mittersta: 3 och 3.',x+11,y+35);note('Median: (3 + 3) ÷ 2 = 3.',x+11,y+12)
+def workspace(row):
+    layout=row['layout']
+    if layout=='axes':axes(377,69,163,139,xmax=5,ymax=6,xlabel='x',ylabel='y')
+    elif layout=='table':
+        heading('Median',370,198,9)
+        writing_grid(370,187,170,38)
+        heading('Medelvärde',370,134,9)
+        writing_grid(370,123,170,52)
+        note('Passar bäst: ______________',370,48,9)
+    elif layout=='tree':
+        C.setFillColor(colors.HexColor('#cccccc'))
+        for i in range(13):
+            for j in range(13):C.circle(370+i*14.17,207-j*14.17,.5,stroke=0,fill=1)
+        C.setFillColor(colors.black)
+    elif layout=='tall':writing_grid(385,207,155,170)
+    elif layout=='fraction':
+        writing_grid(370,171,170,134)
+        if row['id']=='1.4':
+            note('En hel liter',370,211,8)
+            for i in range(8):C.rect(370+i*21.25,185,21.25,17)
+        else:note('Visa bråk och procent här.',370,196,8)
+    else:writing_grid(370,207,170,170)
+def worksheet(row,index):
+    global CURRENT
+    CURRENT=row['id'];note('MODUL 8  /  '+CURRENT,44,810)
+    C.setFont('D',9);C.drawRightString(550,810,'Namn: ______________________')
+    ts=18
+    while pdfmetrics.stringWidth(row['title'],'DB',ts)>506:ts-=.5
+    heading(row['title'],44,781,ts);plain(row['intro'],44,762,505,11,min_y=719)
+    heading('Förstå och räkna',44,704)
+    y=plain(row['idea'],44,689,248,10.5,min_y=615)-9
+    y=formula(row['formula'],44,y,248,12)-10
+    lines(row['example'],44,y,248,size=10,minimum=527)
+    figure(CURRENT)
+    C.setStrokeColor(colors.HexColor('#bbbbbb'));line(44,518,550,518,.5);C.setStrokeColor(colors.black)
+    heading('Öva - börja med a)',44,501)
+    for j,q in enumerate(row['practice']):
+        x=44+(j%2)*262;top=486-(j//2)*85;heading(chr(97+j)+')',x,top-10,10)
+        y=lines(q,x+21,top,219,size=10,minimum=top-49);available=max(21,y-(top-76))
+        if any(s.startswith('$') for s in q) or row['layout'] in ('tall','fraction','geometry'):
+            writing_grid(x+21,y-2,218,min(available,52))
+        else:
+            for yy in [y-13,y-28]:
+                if yy>=top-77:
+                    C.setStrokeColor(colors.HexColor('#c5c5c5'));line(x+21,yy,x+239,yy,.4);C.setStrokeColor(colors.black)
+    heading('Textuppgift - så kan du tänka',44,306)
+    y=plain(row['worked'][0],44,291,505,10.5,min_y=247)-7
+    plain(row['worked'][1],44,y,505,10.5,min_y=215)
+    heading('Prova själv',44,201);plain(row['own'],44,183,285,11,min_y=87);workspace(row)
+    heading('Du har tränat på',44,76,10);plain('• '+row['skills'][0]+'\n• '+row['skills'][1],44,65,300,9,min_y=30)
+    note(f'{index}  /  v2',510,18,8);C.showPage()
+def answer_pages():
+    global CURRENT
+    for ch in range(1,6):
+        CURRENT='facit-'+str(ch);heading('Facit - kapitel '+str(ch),44,791,20)
+        plain('Till version 2. Svar a–d står i ordning. Därefter följer textövningen.',44,769,505,10);y=730
+        for row in [r for r in ROWS if r['id'].startswith(str(ch)+'.')]:
+            y=plain(row['id']+'  '+row['title'],44,y,505,10,bold=True,min_y=50)-4;a=row['answers']
+            y=plain('a) '+a[0]+'   b) '+a[1]+'   c) '+a[2]+'   d) '+a[3],44,y,505,9.5,min_y=45)-4
+            y=plain('Textövning: '+a[4],44,y,505,9.5,min_y=40)-18
+        if ch==2:
+            assert y>234, 'Answer graph would overlap answer text.'
+            heading('Graf till textövning 2.7',337,225,10)
+            axes(352,69,185,130,xmax=5,ymax=6,xlabel='x',ylabel='y',graph=(1,1))
+            for a,b in [(0,1),(2,3),(4,5)]:
+                dot(352+185*a/5,69+130*b/6,True,2.5)
+        note('Cirklar och volymer: π ≈ 3,14. Likvärdiga svar går också bra.',44,26,8)
+        C.setFont('D',8);C.drawRightString(550,26,str(31+ch)+'  /  v2');C.showPage()
+if __name__=='__main__':
+    C=canvas.Canvas(str(OUT/'Modul_8_studieblad.pdf'),pagesize=A4,pageCompression=1)
+    C.setTitle('Modul 8 - korta studieblad och facit - version 2');C.setAuthor('Studiematerial matematik årskurs 8')
+    assert len(ROWS)==31
+    for i,row in enumerate(ROWS,1):worksheet(row,i)
+    answer_pages();C.save()
+    (OUT/'layout_checks.json').write_text(json.dumps(CHECKS,indent=2),encoding='utf-8')
+    print(f'Built 31 worksheets and five answer pages; {len(CHECKS)} layout checks passed.')

@@ -1,0 +1,1332 @@
+[
+  {
+    "id": "1.1",
+    "title": "Addition och subtraktion med negativa tal",
+    "intro": "Negativa tal är mindre än noll. De används till exempel för minusgrader.",
+    "idea": "På tallinjen: addera 3 ger 3 steg åt höger. Subtrahera 3 ger 3 steg åt vänster.",
+    "formula": "a-(-b)=a+b",
+    "example": [
+      "Börja vid −2. Gå 5 steg åt höger.",
+      "$-2+5=3$"
+    ],
+    "practice": [
+      [
+        "$-1+3=\\ldots$",
+        "Börja vid −1. Gå 3 steg åt höger."
+      ],
+      [
+        "$-2+4$"
+      ],
+      [
+        "$-2-3$"
+      ],
+      [
+        "$3-(-2)$"
+      ]
+    ],
+    "worked": [
+      "Det är −3 °C. Temperaturen stiger 5 grader. Vad blir temperaturen?",
+      "Stiger: addera 5. −3 + 5 = 2. Svar: 2 °C."
+    ],
+    "own": "Det är 2 °C. Temperaturen sjunker 6 grader. Vad blir temperaturen? Visa hur du räknar.",
+    "answers": [
+      "2",
+      "2",
+      "−5",
+      "5",
+      "2 − 6 = −4 °C."
+    ],
+    "skills": [
+      "Räkna med negativa tal.",
+      "Tolka en temperaturförändring."
+    ],
+    "layout": "square"
+  },
+  {
+    "id": "1.2",
+    "title": "Multiplikation och division med negativa tal",
+    "intro": "Teckenreglerna hjälper dig att räkna med både positiva och negativa tal.",
+    "idea": "Lika tecken ger ett positivt svar. Olika tecken ger ett negativt svar. Det gäller både gånger och delat.",
+    "formula": "(-a)\\cdot b=-ab\\qquad (-a)\\cdot(-b)=ab",
+    "example": [
+      "$(-3)\\cdot 2=-6$",
+      "$(-6)/(-2)=3$"
+    ],
+    "practice": [
+      [
+        "$(-2)\\cdot3=\\ldots$",
+        "Olika tecken: svaret blir negativt."
+      ],
+      [
+        "$(-2)\\cdot(-3)$"
+      ],
+      [
+        "$(-12)/3$"
+      ],
+      [
+        "$(-12)/(-3)$"
+      ]
+    ],
+    "worked": [
+      "Ett saldo minskar med 10 kr per dag i 3 dagar. Hur stor är förändringen?",
+      "Minskning skrivs negativt: 3 · (−10) = −30 kr."
+    ],
+    "own": "Ett saldo minskar med 20 kr per dag i 4 dagar. Skriv den totala förändringen med tecken.",
+    "answers": [
+      "−6",
+      "6",
+      "−4",
+      "4",
+      "4 · (−20) = −80 kr."
+    ],
+    "skills": [
+      "Välja rätt tecken.",
+      "Multiplicera och dividera negativa tal."
+    ],
+    "layout": "square"
+  },
+  {
+    "id": "1.3",
+    "title": "Blandade räknesätt",
+    "intro": "När flera räknesätt ingår behöver vi räkna i en bestämd ordning.",
+    "idea": "Parenteser först, sedan potenser. Därefter gånger och delat, sist plus och minus. Samma nivå: från vänster.",
+    "formula": "2+3\\cdot4=2+12=14",
+    "example": [
+      "$(2+3)\\cdot4=5\\cdot4=20$",
+      "Parentesen ändrar vad som räknas först."
+    ],
+    "practice": [
+      [
+        "$2+3\\cdot2=2+\\ldots=\\ldots$"
+      ],
+      [
+        "$2+4\\cdot2$"
+      ],
+      [
+        "$(2+4)\\cdot2$"
+      ],
+      [
+        "$20-2\\cdot(3+2)$"
+      ]
+    ],
+    "worked": [
+      "En penna kostar 10 kr. Du köper också 3 häften för 20 kr styck. Vad kostar allt?",
+      "Häftena först: 3 · 20 = 60. Totalt: 10 + 60 = 70 kr."
+    ],
+    "own": "Du har 100 kr och köper 3 bullar för 15 kr styck. Hur mycket har du kvar?",
+    "answers": [
+      "8 (mellanled: 6)",
+      "10",
+      "12",
+      "10",
+      "100 − 3 · 15 = 100 − 45 = 55 kr."
+    ],
+    "skills": [
+      "Följa räkneordningen.",
+      "Skriva och beräkna ett uttryck."
+    ],
+    "layout": "square"
+  },
+  {
+    "id": "1.4",
+    "title": "Multiplikation och division med bråk",
+    "intro": "Gånger kan betyda en del av en del. Delat kan betyda: hur många delar ryms?",
+    "idea": "Gånger: multiplicera täljarna och nämnarna. Delat: vänd det andra bråket och multiplicera.",
+    "formula": "\\frac{a}{b}\\cdot\\frac{c}{d}=\\frac{ac}{bd}",
+    "example": [
+      "$\\frac12\\cdot\\frac12=\\frac14$",
+      "$\\frac12\\div\\frac14=\\frac12\\cdot\\frac41=2$"
+    ],
+    "practice": [
+      [
+        "$\\frac12\\cdot\\frac13=\\frac{1\\cdot1}{2\\cdot3}=\\ldots$"
+      ],
+      [
+        "$\\frac23\\cdot\\frac34$"
+      ],
+      [
+        "$\\frac12\\div\\frac12$"
+      ],
+      [
+        "$\\frac34\\div\\frac18$"
+      ]
+    ],
+    "worked": [
+      "En kanna har 3/4 liter saft. Ett glas rymmer 1/4 liter. Hur många glas kan fyllas?",
+      "Hur många fjärdedelar ryms i tre fjärdedelar? Det ryms 3. Svar: 3 glas."
+    ],
+    "own": "Du har 1/2 liter saft. Ett glas rymmer 1/8 liter. Hur många fulla glas får du? Rita gärna delar.",
+    "answers": [
+      "1/6",
+      "1/2 (6/12)",
+      "1",
+      "6",
+      "(1/2) ÷ (1/8) = 4. Svar: 4 glas."
+    ],
+    "skills": [
+      "Multiplicera och dividera bråk.",
+      "Förstå hur många delar som ryms."
+    ],
+    "layout": "fraction"
+  },
+  {
+    "id": "1.5",
+    "title": "Potenser",
+    "intro": "En potens är ett kort sätt att skriva samma faktor flera gånger.",
+    "idea": "Basen är talet som multipliceras. Exponenten visar hur många gånger det är med som faktor.",
+    "formula": "a^3=a\\cdot a\\cdot a",
+    "example": [
+      "$2^3=2\\cdot2\\cdot2=8$",
+      "Det betyder inte 2 · 3."
+    ],
+    "practice": [
+      [
+        "$2^2=2\\cdot2=\\ldots$"
+      ],
+      [
+        "$3^2$"
+      ],
+      [
+        "$2^4$"
+      ],
+      [
+        "$2\\cdot3^2$"
+      ]
+    ],
+    "worked": [
+      "En kvadrat har sidan 4 cm. Vad är arean?",
+      "Sidan gånger sig själv: 4² = 4 · 4 = 16 cm²."
+    ],
+    "own": "En kvadrat har sidan 6 cm. Skriv arean som en potens och räkna ut den.",
+    "answers": [
+      "4",
+      "9",
+      "16",
+      "18",
+      "6² = 6 · 6 = 36 cm²."
+    ],
+    "skills": [
+      "Tolka bas och exponent.",
+      "Beräkna en potens."
+    ],
+    "layout": "square"
+  },
+  {
+    "id": "1.6",
+    "title": "Tiopotenser och grundpotensform",
+    "intro": "Stora och små tal kan skrivas kortare med tiopotenser.",
+    "idea": "Grundpotensform: ett tal från 1 till mindre än 10 multiplicerat med en tiopotens.",
+    "formula": "10^3=1000\\qquad 10^{-2}=0{,}01",
+    "example": [
+      "$4500=4{,}5\\cdot10^3$",
+      "$0{,}004=4\\cdot10^{-3}$"
+    ],
+    "practice": [
+      [
+        "$10^2=10\\cdot10=\\ldots$"
+      ],
+      [
+        "$10^{-1}$"
+      ],
+      [
+        "Skriv 6 000 i grundpotensform."
+      ],
+      [
+        "Skriv 0,003 i grundpotensform."
+      ]
+    ],
+    "worked": [
+      "Ett avstånd är 25 000 meter. Skriv det i grundpotensform.",
+      "25 000 = 2,5 · 10 000 = 2,5 · 10⁴ meter."
+    ],
+    "own": "Ett avstånd är 72 000 meter. Skriv det i grundpotensform. Kontrollera genom att multiplicera.",
+    "answers": [
+      "100",
+      "0,1",
+      "6 · 10³",
+      "3 · 10⁻³",
+      "7,2 · 10⁴ m. Kontroll: 7,2 · 10 000 = 72 000."
+    ],
+    "skills": [
+      "Använda tiopotenser.",
+      "Skriva tal i grundpotensform."
+    ],
+    "layout": "square"
+  },
+  {
+    "id": "2.1",
+    "title": "Förändringsfaktor",
+    "intro": "Förändringsfaktorn ger det nya värdet direkt efter en procentuell förändring.",
+    "idea": "Vid 20 % rabatt återstår 80 %: faktorn är 0,80. Vid 20 % ökning blir det 120 %: faktorn är 1,20.",
+    "formula": "\\mathrm{nytt\\ värde}=\\mathrm{gammalt\\ värde}\\cdot\\mathrm{faktor}",
+    "example": [
+      "En vara för 100 kr får 20 % rabatt.",
+      "$100\\cdot0{,}80=80\\ \\mathrm{kr}$"
+    ],
+    "practice": [
+      [
+        "10 % rabatt: 100 % − 10 % = ___ %.",
+        "Förändringsfaktor: ______"
+      ],
+      [
+        "20 % rabatt: förändringsfaktor?"
+      ],
+      [
+        "200 kr med 20 % rabatt: nytt pris?"
+      ],
+      [
+        "200 kr höjs med 20 %: nytt pris?"
+      ]
+    ],
+    "worked": [
+      "En tröja kostar 300 kr och får 20 % rabatt. Vad blir priset?",
+      "80 % återstår. Nytt pris: 300 · 0,80 = 240 kr."
+    ],
+    "own": "En jacka kostar 500 kr och får 30 % rabatt. Hur mycket ska du betala? Visa faktor och beräkning.",
+    "answers": [
+      "90 %; 0,90",
+      "0,80",
+      "160 kr",
+      "240 kr",
+      "70 % återstår: 500 · 0,70 = 350 kr."
+    ],
+    "skills": [
+      "Välja förändringsfaktor.",
+      "Räkna ut nytt pris."
+    ],
+    "layout": "square"
+  },
+  {
+    "id": "2.2",
+    "title": "Ränta",
+    "intro": "Ränta är ersättning för sparande eller en kostnad för att låna pengar.",
+    "idea": "Årsräntan anges i procent. Beräkningarna här gäller ett år, utan avgifter eller skatt.",
+    "formula": "\\mathrm{ränta}=\\mathrm{belopp}\\cdot\\frac{\\mathrm{räntesats}}{100}",
+    "example": [
+      "$1000\\cdot\\frac{3}{100}=30\\ \\mathrm{kr}$",
+      "3 % årsränta ger 30 kr på 1 000 kr."
+    ],
+    "practice": [
+      [
+        "1 % av 1 000 kr: 1 000 ÷ 100 = ___ kr"
+      ],
+      [
+        "2 % av 1 000 kr: ränta i kronor?"
+      ],
+      [
+        "3 % av 2 000 kr: ränta i kronor?"
+      ],
+      [
+        "2 000 kr + 3 % ränta: totalt efter ett år?"
+      ]
+    ],
+    "worked": [
+      "Du sparar 2 000 kr med 4 % årsränta. Hur mycket har du efter ett år?",
+      "Ränta: 2 000 · 0,04 = 80 kr. Totalt: 2 000 + 80 = 2 080 kr."
+    ],
+    "own": "Du sparar 3 000 kr med 2 % årsränta. Hur mycket har du efter ett år? Bortse från skatt.",
+    "answers": [
+      "10 kr",
+      "20 kr",
+      "60 kr",
+      "2 060 kr",
+      "Ränta: 60 kr. Totalt: 3 000 + 60 = 3 060 kr."
+    ],
+    "skills": [
+      "Beräkna ränta i kronor.",
+      "Skilja ränta från totalt belopp."
+    ],
+    "layout": "square"
+  },
+  {
+    "id": "2.3",
+    "title": "Procent och procentenheter",
+    "intro": "Procentenheter jämför två procenttal. Procentuell ökning jämför med startvärdet.",
+    "idea": "Från 20 % till 30 % är 10 procentenheter. Ökningen 10 jämförd med 20 är däremot 50 %.",
+    "formula": "\\mathrm{ökning\\ i\\ procent}=\\frac{\\mathrm{ökningen}}{\\mathrm{startvärdet}}\\cdot100",
+    "example": [
+      "Pris från 80 till 100 kr: ökningen är 20 kr.",
+      "$\\frac{20}{80}\\cdot100=25\\ \\%$"
+    ],
+    "practice": [
+      [
+        "Från 10 % till 15 %:",
+        "15 − 10 = ___ procentenheter."
+      ],
+      [
+        "Från 20 % till 30 %: procentenheter?"
+      ],
+      [
+        "Pris från 100 till 120 kr: ökning i %?"
+      ],
+      [
+        "Pris från 80 till 100 kr: ökning i %?"
+      ]
+    ],
+    "worked": [
+      "En andel går från 40 % till 50 %. Hur förändras den?",
+      "Skillnad: 10 procentenheter. Relativ ökning: 10/40 · 100 = 25 %."
+    ],
+    "own": "En andel går från 20 % till 25 %. Beräkna ökningen i procentenheter och i procent.",
+    "answers": [
+      "5 procentenheter",
+      "10 procentenheter",
+      "20 %",
+      "25 %",
+      "5 procentenheter. Relativ ökning: 5/20 · 100 = 25 %."
+    ],
+    "skills": [
+      "Skilja procent från procentenheter.",
+      "Jämföra ökningen med startvärdet."
+    ],
+    "layout": "square"
+  },
+  {
+    "id": "2.4",
+    "title": "Koordinatsystem och tolka grafer",
+    "intro": "En graf visar hur två saker hänger ihop. Här visar grafen priset för att hyra en cykel.",
+    "idea": "x-axeln går vågrätt: tid i timmar. y-axeln går lodrätt: pris i kronor. Läs x först, sedan y.",
+    "formula": "(x,y)",
+    "example": [
+      "Punkten (2, 20): börja vid x = 2.",
+      "Gå upp till linjen, läs y = 20.",
+      "2 timmar kostar 20 kr."
+    ],
+    "practice": [
+      [
+        "1 timme kostar ___ kr.",
+        "Punkten är (1, ___)."
+      ],
+      [
+        "Vad kostar 3 timmar?"
+      ],
+      [
+        "Hur länge räcker 40 kr?"
+      ],
+      [
+        "Vad kostar 2,5 timmar?"
+      ]
+    ],
+    "worked": [
+      "Mira hyr cykeln i 1 timme. Leo hyr den i 3 timmar. Hur mycket mer betalar Leo?",
+      "Läs av: 10 kr och 30 kr. Skillnad: 30 − 10 = 20 kr. Leo betalar 20 kr mer."
+    ],
+    "own": "Sam hyr cykeln i 2 timmar. Ali hyr den i 5 timmar. Hur mycket mer betalar Ali? Visa hur du räknar.",
+    "answers": [
+      "10 kr; (1, 10)",
+      "30 kr",
+      "4 timmar",
+      "25 kr",
+      "50 − 20 = 30 kr mer."
+    ],
+    "skills": [
+      "Läsa koordinater i ordningen (x, y).",
+      "Läsa av och jämföra värden i en graf."
+    ],
+    "layout": "square"
+  },
+  {
+    "id": "2.5",
+    "title": "Proportionalitet",
+    "intro": "Samma pris per styck ger ett proportionellt samband: dubbelt antal ger dubbelt pris.",
+    "idea": "k är priset per styck. Om x är antalet, är y det totala priset. Noll varor kostar noll kronor.",
+    "formula": "y=k\\cdot x",
+    "example": [
+      "3 äpplen kostar 15 kr. Ett kostar 15 ÷ 3 = 5 kr.",
+      "$y=5x\\quad\\Rightarrow\\quad x=4:\\ y=20$"
+    ],
+    "practice": [
+      [
+        "Ett äpple kostar 5 kr.",
+        "2 äpplen: 2 · 5 = ___ kr."
+      ],
+      [
+        "Vad kostar 4 äpplen à 5 kr?"
+      ],
+      [
+        "3 äpplen kostar 15 kr. Pris per styck?"
+      ],
+      [
+        "6 äpplen kostar 30 kr. Pris för 9?"
+      ]
+    ],
+    "worked": [
+      "4 häften kostar 60 kr. Vad kostar 6 likadana häften?",
+      "Ett kostar 60 ÷ 4 = 15 kr. Sex kostar 6 · 15 = 90 kr."
+    ],
+    "own": "3 kg päron kostar 75 kr. Vad kostar 5 kg till samma kilopris? Börja med priset per kg.",
+    "answers": [
+      "10 kr",
+      "20 kr",
+      "5 kr",
+      "45 kr",
+      "75 ÷ 3 = 25 kr/kg. 5 · 25 = 125 kr."
+    ],
+    "skills": [
+      "Hitta värdet per enhet.",
+      "Använda ett proportionellt samband."
+    ],
+    "layout": "square"
+  },
+  {
+    "id": "2.6",
+    "title": "Andra linjära funktioner",
+    "intro": "En kostnad kan ha en fast del och en del som ökar lika mycket varje gång.",
+    "idea": "m är startvärdet, när x = 0. k är ökningen när x ökar med 1.",
+    "formula": "y=kx+m",
+    "example": [
+      "Startavgift 20 kr, sedan 10 kr per timme.",
+      "$y=10x+20$",
+      "$x=2:\\ y=10\\cdot2+20=40$"
+    ],
+    "practice": [
+      [
+        "$y=10x+20,\\ x=0$",
+        "$y=10\\cdot0+20=\\ldots$"
+      ],
+      [
+        "$y=10x+20,\\ x=1$"
+      ],
+      [
+        "$y=10x+20,\\ x=3$"
+      ],
+      [
+        "I y = 10x + 20: vad betyder 20?"
+      ]
+    ],
+    "worked": [
+      "En taxi tar 40 kr i startavgift och 15 kr per km. Vad kostar 4 km?",
+      "Fast del + rörlig del: 40 + 4 · 15 = 100 kr."
+    ],
+    "own": "En cykel kostar 30 kr att låsa upp och sedan 10 kr per timme. Vad kostar 3 timmar?",
+    "answers": [
+      "20",
+      "30",
+      "50",
+      "Startavgiften är 20 kr.",
+      "30 + 3 · 10 = 60 kr."
+    ],
+    "skills": [
+      "Tolka startvärde och ökning.",
+      "Beräkna fast och rörlig kostnad."
+    ],
+    "layout": "square"
+  },
+  {
+    "id": "2.7",
+    "title": "Räta grafer",
+    "intro": "En linjär funktion kan visas som en rät linje genom beräknade punkter.",
+    "idea": "Välj x. Beräkna y. Markera (x, y). Rita en linje genom punkterna. Kontrollera med en tredje punkt.",
+    "formula": "y=x+1",
+    "example": [
+      "$x=0:\\ y=0+1=1$",
+      "$x=1:\\ y=1+1=2$",
+      "Punkterna är (0, 1) och (1, 2)."
+    ],
+    "practice": [
+      [
+        "$y=x+1,\\ x=2$",
+        "y = 2 + 1 = ___; punkt (2, ___)."
+      ],
+      [
+        "y = x + 1: beräkna y när x = 3."
+      ],
+      [
+        "y = x + 1: beräkna y när x = 4."
+      ],
+      [
+        "Går y = −x + 4 uppåt eller nedåt",
+        "när x ökar?"
+      ]
+    ],
+    "worked": [
+      "En tank har 1 liter vatten och fylls med 1 liter per minut. Hur visas detta i en graf?",
+      "y = x + 1. Vid 0 och 2 minuter får vi (0, 1) och (2, 3). Dra en linje genom dem."
+    ],
+    "own": "Rita grafen y = x + 1 i rutan till höger. Markera punkterna för x = 0, 2 och 4. Dra en rät linje.",
+    "answers": [
+      "3; (2, 3)",
+      "4",
+      "5",
+      "Nedåt.",
+      "Punkter: (0, 1), (2, 3), (4, 5). En rät linje genom dem."
+    ],
+    "skills": [
+      "Beräkna punkter till en graf.",
+      "Markera punkter och dra en linje."
+    ],
+    "layout": "axes"
+  },
+  {
+    "id": "3.1",
+    "title": "Förenkla parentesuttryck",
+    "intro": "Ett förenklat uttryck är kortare men har samma värde som före förenklingen.",
+    "idea": "Plus före parentes: behåll tecknen. Minus före parentes: byt tecken på varje term i parentesen.",
+    "formula": "a-(b+c)=a-b-c",
+    "example": [
+      "$5-(x+2)=5-x-2$",
+      "$=3-x$"
+    ],
+    "practice": [
+      [
+        "$2+(x+3)=x+2+3=x+\\ldots$"
+      ],
+      [
+        "$4+(x+2)$"
+      ],
+      [
+        "$7-(x+3)$"
+      ],
+      [
+        "$3x-(x-4)$"
+      ]
+    ],
+    "worked": [
+      "Du har 100 kr. Ett inköp kostar (x + 20) kr. Skriv vad du har kvar.",
+      "Kvar: 100 − (x + 20) = 100 − x − 20 = 80 − x kr."
+    ],
+    "own": "Du har 80 kr. Du handlar för (x + 10) kr. Skriv ett förenklat uttryck för det du har kvar.",
+    "answers": [
+      "x + 5",
+      "x + 6",
+      "4 − x",
+      "2x + 4",
+      "80 − (x + 10) = 70 − x kr."
+    ],
+    "skills": [
+      "Ta bort parenteser.",
+      "Samla termer av samma sort."
+    ],
+    "layout": "tall"
+  },
+  {
+    "id": "3.2",
+    "title": "Multiplikation med parentesuttryck",
+    "intro": "En faktor framför en parentes gäller allt som står inne i parentesen.",
+    "idea": "Multiplicera talet framför parentesen med varje term inne i parentesen.",
+    "formula": "a(b+c)=ab+ac",
+    "example": [
+      "$3(x+2)=3\\cdot x+3\\cdot2$",
+      "$=3x+6$"
+    ],
+    "practice": [
+      [
+        "$2(x+1)=2x+2\\cdot1$",
+        "$=2x+\\ldots$"
+      ],
+      [
+        "$3(x+2)$"
+      ],
+      [
+        "$4(2x-1)$"
+      ],
+      [
+        "$2(x+3)+x$"
+      ]
+    ],
+    "worked": [
+      "Tre personer betalar x kr var i inträde och 20 kr var för fika. Vad blir totalkostnaden?",
+      "Var och en: x + 20. Totalt: 3(x + 20) = 3x + 60 kr."
+    ],
+    "own": "Fyra personer betalar x kr var i inträde och 10 kr var för fika. Skriv och förenkla totalkostnaden.",
+    "answers": [
+      "2x + 2",
+      "3x + 6",
+      "8x − 4",
+      "3x + 6",
+      "4(x + 10) = 4x + 40 kr."
+    ],
+    "skills": [
+      "Multiplicera varje term i en parentes.",
+      "Skriva och förenkla ett uttryck."
+    ],
+    "layout": "tall"
+  },
+  {
+    "id": "3.3",
+    "title": "Förenkla och beräkna värdet av ett uttryck",
+    "intro": "Bokstäver står för tal. När talet är känt kan du beräkna uttryckets värde.",
+    "idea": "Förenkla genom att samla lika termer. Byt sedan ut bokstaven mot talet. Följ räkneordningen.",
+    "formula": "2x+x=3x",
+    "example": [
+      "$2x+x+1=3x+1$",
+      "$x=2:\\ 3\\cdot2+1=7$"
+    ],
+    "practice": [
+      [
+        "$x+3,\\ x=2$",
+        "$2+3=\\ldots$"
+      ],
+      [
+        "$2x+1,\\ x=3$"
+      ],
+      [
+        "$2x+x+1,\\ x=3$"
+      ],
+      [
+        "$x^2+2,\\ x=-3$"
+      ]
+    ],
+    "worked": [
+      "En biljett kostar (5x + 20) kr. x är antal zoner. Vad kostar 3 zoner?",
+      "Sätt in x = 3: 5 · 3 + 20 = 15 + 20 = 35 kr."
+    ],
+    "own": "Ett paket kostar (4x + 15) kr. x är vikten i kg. Vad kostar ett paket på 5 kg?",
+    "answers": [
+      "5",
+      "7",
+      "10",
+      "11",
+      "4 · 5 + 15 = 35 kr."
+    ],
+    "skills": [
+      "Förenkla ett uttryck.",
+      "Sätta in ett tal i stället för bokstaven."
+    ],
+    "layout": "tall"
+  },
+  {
+    "id": "3.4",
+    "title": "Formler",
+    "intro": "En formel beskriver ett samband och kan användas med olika tal.",
+    "idea": "I s = v · t är s sträckan, v hastigheten och t tiden. km/h tillsammans med timmar ger kilometer.",
+    "formula": "s=v\\cdot t",
+    "example": [
+      "v = 10 km/h och t = 2 timmar.",
+      "$s=10\\cdot2=20\\ \\mathrm{km}$"
+    ],
+    "practice": [
+      [
+        "v = 4 km/h, t = 2 h.",
+        "s = 4 · 2 = ___ km"
+      ],
+      [
+        "v = 6 km/h, t = 3 h. Beräkna s."
+      ],
+      [
+        "v = 10 km/h, t = 1,5 h. Beräkna s."
+      ],
+      [
+        "v = 60 km/h, t = 30 min. Beräkna s."
+      ]
+    ],
+    "worked": [
+      "Du cyklar i 12 km/h i 2 timmar. Hur långt kommer du?",
+      "Sök sträckan: s = v · t = 12 · 2 = 24 km."
+    ],
+    "own": "Du går i 4 km/h i 1,5 timmar. Hur långt går du? Skriv formeln, sätt in talen och svara med enhet.",
+    "answers": [
+      "8 km",
+      "18 km",
+      "15 km",
+      "30 km (30 min = 0,5 h)",
+      "s = 4 · 1,5 = 6 km."
+    ],
+    "skills": [
+      "Använda en formel.",
+      "Välja enheter som passar ihop."
+    ],
+    "layout": "tall"
+  },
+  {
+    "id": "3.5",
+    "title": "Mönster",
+    "intro": "En regel hjälper dig att fortsätta ett mönster och hitta ett senare tal.",
+    "idea": "Om ökningen är densamma varje gång: börja med första talet och lägg till ökningen n − 1 gånger. n är platsnumret.",
+    "formula": "\\mathrm{tal}=\\mathrm{första}+(n-1)\\cdot\\mathrm{ökning}",
+    "example": [
+      "3, 5, 7, 9, ... ökar med 2 varje gång.",
+      "$\\mathrm{tal\\ nr\\ 4}=3+(4-1)\\cdot2=9$"
+    ],
+    "practice": [
+      [
+        "2, 4, 6, ... Nästa tal: 6 + 2 = ___"
+      ],
+      [
+        "3, 6, 9, ... Skriv nästa två tal."
+      ],
+      [
+        "5, 8, 11, ... Vilket är tal nummer 5?"
+      ],
+      [
+        "Regeln är 2n + 1. Beräkna tal nr 10."
+      ]
+    ],
+    "worked": [
+      "Figur 1 har 4 prickar. Varje ny figur har 2 fler. Hur många har figur 5?",
+      "Fyra ökningar: 4 + (5 − 1) · 2 = 12 prickar."
+    ],
+    "own": "Figur 1 har 5 prickar. Varje ny figur har 3 fler. Hur många prickar har figur 4? Visa hur du tänker.",
+    "answers": [
+      "8",
+      "12 och 15",
+      "17",
+      "21",
+      "5 + (4 − 1) · 3 = 14 prickar."
+    ],
+    "skills": [
+      "Hitta ökningen i ett mönster.",
+      "Skilja platsnummer från talets värde."
+    ],
+    "layout": "square"
+  },
+  {
+    "id": "3.6",
+    "title": "Ekvationer med parenteser",
+    "intro": "Att lösa en ekvation betyder att hitta talet som gör båda sidor lika.",
+    "idea": "Gör samma sak på båda sidor. I exemplet nedan kan vi först dela båda sidor med 2.",
+    "formula": "2(x+3)=14",
+    "example": [
+      "$x+3=7\\quad\\mathrm{(dela\\ med\\ 2)}$",
+      "$x=4\\quad\\mathrm{(subtrahera\\ 3)}$",
+      "Kontroll: 2 · (4 + 3) = 14."
+    ],
+    "practice": [
+      [
+        "$x+3=8$",
+        "$x=8-3=\\ldots$"
+      ],
+      [
+        "$2x=12$"
+      ],
+      [
+        "$2(x+1)=10$"
+      ],
+      [
+        "$3(x-2)=15$"
+      ]
+    ],
+    "worked": [
+      "Två påsar har (x + 3) kulor var, totalt 18. Hur många är x?",
+      "2(x + 3) = 18. Dela med 2: x + 3 = 9. Ta bort 3: x = 6."
+    ],
+    "own": "Tre lådor har (x + 2) pennor var. Totalt är det 21 pennor. Ställ upp en ekvation och bestäm x.",
+    "answers": [
+      "x = 5",
+      "x = 6",
+      "x = 4",
+      "x = 7",
+      "3(x + 2) = 21 → x + 2 = 7 → x = 5. Kontroll: 3 · (5 + 2) = 21."
+    ],
+    "skills": [
+      "Göra samma operation på båda sidor.",
+      "Lösa och kontrollera en ekvation."
+    ],
+    "layout": "tall"
+  },
+  {
+    "id": "4.1",
+    "title": "Cirklar",
+    "intro": "Omkrets är längden runt kanten. Area är ytan inuti cirkeln.",
+    "idea": "Radien r går från mitten till kanten. Diametern d går rakt genom mitten och är dubbelt så lång.",
+    "formula": "d=2r\\quad O=\\pi d\\quad A=\\pi r^2",
+    "example": [
+      "Använd π ≈ 3,14. Radie 2 cm ger d = 4 cm.",
+      "$O\\approx3{,}14\\cdot4=12{,}56\\ \\mathrm{cm}$",
+      "$A\\approx3{,}14\\cdot2^2=12{,}56\\ \\mathrm{cm}^2$"
+    ],
+    "practice": [
+      [
+        "r = 3 cm. d = 2 · 3 = ___ cm"
+      ],
+      [
+        "d = 10 cm. Beräkna radien."
+      ],
+      [
+        "d = 6 cm. Beräkna omkretsen."
+      ],
+      [
+        "r = 3 cm. Beräkna arean."
+      ]
+    ],
+    "worked": [
+      "Ett runt bord har diametern 1 m. Hur långt är det runt kanten?",
+      "Sök omkretsen: O = πd ≈ 3,14 · 1 = 3,14 m."
+    ],
+    "own": "En rund matta har radien 1 m. Hur stor är arean? Rita gärna en cirkel och markera radien.",
+    "answers": [
+      "6 cm",
+      "5 cm",
+      "≈ 18,84 cm",
+      "≈ 28,26 cm²",
+      "A = π · 1² ≈ 3,14 m²."
+    ],
+    "skills": [
+      "Skilja radie från diameter.",
+      "Beräkna omkrets och area."
+    ],
+    "layout": "geometry"
+  },
+  {
+    "id": "4.2",
+    "title": "Cirkelbågar och cirkelsektorer",
+    "intro": "En cirkelsektor är en del av cirkelns yta. Bågen är den böjda kanten.",
+    "idea": "Ett helt varv är 360°. Samma andel av varvet ger samma andel av cirkelns area och omkrets.",
+    "formula": "A_{\\mathrm{sektor}}=\\frac{v}{360}\\cdot\\pi r^2",
+    "example": [
+      "$\\mathrm{båglängd}=\\frac{v}{360}\\cdot2\\pi r$",
+      "$90/360=1/4$",
+      "90° ger en fjärdedel av area och omkrets."
+    ],
+    "practice": [
+      [
+        "180° av 360°: andel = 180/360 = ___"
+      ],
+      [
+        "90° av 360°: vilken andel?"
+      ],
+      [
+        "Hela arean är 40 cm². Area vid 90°?"
+      ],
+      [
+        "Hela omkretsen är 24 cm. Båge vid 90°?"
+      ]
+    ],
+    "worked": [
+      "En cirkel har arean 60 cm². En sektor har vinkeln 120°. Vad är sektorns area?",
+      "Andelen är 120/360 = 1/3. Arean är 60 ÷ 3 = 20 cm²."
+    ],
+    "own": "En cirkel har omkretsen 40 cm. Hur lång är bågen till en sektor på 90°? Rita gärna sektorn.",
+    "answers": [
+      "1/2",
+      "1/4",
+      "10 cm²",
+      "6 cm",
+      "90/360 = 1/4. Båglängd: 40 ÷ 4 = 10 cm."
+    ],
+    "skills": [
+      "Hitta andelen av en cirkel.",
+      "Skilja båglängd från sektorarea."
+    ],
+    "layout": "geometry"
+  },
+  {
+    "id": "4.3",
+    "title": "Enheter och volym",
+    "intro": "Volym visar hur mycket något rymmer. Liter och kubikenheter beskriver samma storhet.",
+    "idea": "Gör om till samma enhet innan du räknar. Kubikdecimeter hör ihop med liter, kubikcentimeter med milliliter.",
+    "formula": "1\\ \\mathrm{dm}^3=1\\ \\mathrm{l}\\quad1\\ \\mathrm{cm}^3=1\\ \\mathrm{ml}",
+    "example": [
+      "1 liter = 1 000 ml. 1 m³ = 1 000 liter.",
+      "$2{,}5\\ \\mathrm{l}=2500\\ \\mathrm{ml}$"
+    ],
+    "practice": [
+      [
+        "2 liter = 2 · 1 000 = ___ ml"
+      ],
+      [
+        "3 dm³ = hur många liter?"
+      ],
+      [
+        "750 ml = hur många liter?"
+      ],
+      [
+        "0,2 m³ = hur många liter?"
+      ]
+    ],
+    "worked": [
+      "En flaska har 1,5 liter. Varje glas rymmer 250 ml. Hur många glas räcker det till?",
+      "1,5 liter = 1 500 ml. Antal glas: 1 500 ÷ 250 = 6."
+    ],
+    "own": "En kanna har 2 liter. Varje glas rymmer 200 ml. Hur många fulla glas får du? Visa enhetsbytet.",
+    "answers": [
+      "2 000 ml",
+      "3 liter",
+      "0,75 liter",
+      "200 liter",
+      "2 liter = 2 000 ml. 2 000 ÷ 200 = 10 glas."
+    ],
+    "skills": [
+      "Omvandla volymenheter.",
+      "Använda samma enhet i beräkningen."
+    ],
+    "layout": "square"
+  },
+  {
+    "id": "4.4",
+    "title": "Prisma och cylinder",
+    "intro": "Prismor och cylindrar har samma tvärsnitt hela vägen genom kroppen.",
+    "idea": "Basytans area B gånger höjden h ger volymen. B mäts i kvadratenheter, h i längdenheter.",
+    "formula": "V=B\\cdot h\\quad V_{\\mathrm{cylinder}}=\\pi r^2h",
+    "example": [
+      "Rätblock: bas 2 · 3 = 6 cm², höjd 4 cm.",
+      "$V=6\\cdot4=24\\ \\mathrm{cm}^3$"
+    ],
+    "practice": [
+      [
+        "B = 5 cm², h = 2 cm.",
+        "V = 5 · 2 = ___ cm³"
+      ],
+      [
+        "Rätblock: 2 × 2 × 3 cm. Volym?"
+      ],
+      [
+        "B = 12 cm², h = 5 cm. Volym?"
+      ],
+      [
+        "Cylinder: r = 1 cm, h = 10 cm. Volym?"
+      ]
+    ],
+    "worked": [
+      "En låda är 4 dm lång, 2 dm bred och 3 dm hög. Hur många liter rymmer den?",
+      "V = 4 · 2 · 3 = 24 dm³. Eftersom 1 dm³ = 1 liter: 24 liter."
+    ],
+    "own": "Ett akvarium är 5 dm långt, 2 dm brett och 3 dm högt. Hur många liter rymmer det till kanten?",
+    "answers": [
+      "10 cm³",
+      "12 cm³",
+      "60 cm³",
+      "≈ 31,4 cm³",
+      "5 · 2 · 3 = 30 dm³ = 30 liter."
+    ],
+    "skills": [
+      "Beräkna volym med basyta och höjd.",
+      "Koppla dm³ till liter."
+    ],
+    "layout": "geometry"
+  },
+  {
+    "id": "4.5",
+    "title": "Pyramider och koner",
+    "intro": "En pyramid eller kon rymmer en tredjedel av motsvarande prisma eller cylinder.",
+    "idea": "Beräkna basytans area B. Multiplicera med den vinkelräta höjden h. Dela sedan med 3.",
+    "formula": "V=\\frac{B\\cdot h}{3}\\quad V_{\\mathrm{kon}}=\\frac{\\pi r^2h}{3}",
+    "example": [
+      "En pyramid har B = 12 cm² och h = 5 cm.",
+      "$V=\\frac{12\\cdot5}{3}=20\\ \\mathrm{cm}^3$"
+    ],
+    "practice": [
+      [
+        "B = 3 cm², h = 3 cm.",
+        "V = 3 · 3 ÷ 3 = ___ cm³"
+      ],
+      [
+        "B = 12 cm², h = 3 cm. Volym?"
+      ],
+      [
+        "B = 20 cm², h = 6 cm. Volym?"
+      ],
+      [
+        "Kon: r = 1 cm, h = 3 cm. Volym?"
+      ]
+    ],
+    "worked": [
+      "En pyramid har kvadratisk bas med sidan 4 cm och höjd 6 cm. Vad är volymen?",
+      "B = 4 · 4 = 16 cm². V = 16 · 6 ÷ 3 = 32 cm³."
+    ],
+    "own": "En pyramid har kvadratisk bas med sidan 3 cm och höjden 4 cm. Beräkna volymen. Rita gärna en skiss.",
+    "answers": [
+      "3 cm³",
+      "12 cm³",
+      "40 cm³",
+      "≈ 3,14 cm³",
+      "B = 3 · 3 = 9 cm². V = 9 · 4 ÷ 3 = 12 cm³."
+    ],
+    "skills": [
+      "Beräkna basytans area.",
+      "Beräkna pyramidens och konens volym."
+    ],
+    "layout": "geometry"
+  },
+  {
+    "id": "4.6",
+    "title": "Pythagoras sats",
+    "intro": "I en rätvinklig triangel kan två kända sidor hjälpa oss att beräkna den tredje.",
+    "idea": "Kateterna a och b bildar den räta vinkeln. Hypotenusan c ligger mitt emot och är längst.",
+    "formula": "a^2+b^2=c^2",
+    "example": [
+      "$3^2+4^2=c^2$",
+      "$9+16=25=c^2$",
+      "$c=\\sqrt{25}=5\\ \\mathrm{cm}$"
+    ],
+    "practice": [
+      [
+        "$\\sqrt9=\\ldots$",
+        "Vilket positivt tal gånger sig självt blir 9?"
+      ],
+      [
+        "$\\sqrt{64}$"
+      ],
+      [
+        "Kateter 6 och 8 cm. Hypotenusan?"
+      ],
+      [
+        "c = 13 cm, a = 5 cm. Beräkna b."
+      ]
+    ],
+    "worked": [
+      "En stege står 3 m från väggen och når 4 m upp. Hur lång är stegen?",
+      "Stegen är hypotenusan. c² = 3² + 4² = 25. c = 5 m."
+    ],
+    "own": "En rektangel har sidorna 5 och 12 cm. Hur lång är diagonalen? Rita diagonalen och beräkna längden.",
+    "answers": [
+      "3",
+      "8",
+      "10 cm",
+      "12 cm",
+      "c² = 5² + 12² = 25 + 144 = 169. c = 13 cm."
+    ],
+    "skills": [
+      "Känna igen hypotenusan.",
+      "Använda Pythagoras sats."
+    ],
+    "layout": "geometry"
+  },
+  {
+    "id": "5.1",
+    "title": "Sannolikhet",
+    "intro": "Sannolikhet beskriver chansen att något händer, från 0 (omöjligt) till 1 (säkert).",
+    "idea": "När alla utfall är lika sannolika: räkna de gynnsamma utfallen och dividera med alla möjliga.",
+    "formula": "P=\\frac{\\mathrm{gynnsamma\\ utfall}}{\\mathrm{möjliga\\ utfall}}",
+    "example": [
+      "En vanlig tärning har sex lika sannolika sidor.",
+      "$P(\\mathrm{sexa})=\\frac16$"
+    ],
+    "practice": [
+      [
+        "Ett mynt har 2 lika sannolika sidor.",
+        "$P(\\mathrm{krona})=\\frac{1}{\\ldots}$"
+      ],
+      [
+        "Vanlig tärning: P(etta)?"
+      ],
+      [
+        "Vanlig tärning: P(tal större än 4)?"
+      ],
+      [
+        "3 röda och 2 blå kulor: P(blå)?"
+      ]
+    ],
+    "worked": [
+      "En påse har 4 röda och 6 blå kulor. Du drar en slumpmässigt. Vad är P(röd)?",
+      "4 röda av totalt 10 kulor: 4/10 = 40 %."
+    ],
+    "own": "En påse har 3 gröna och 9 gula kulor. Du drar en slumpmässigt. Vad är P(grön)? Svara i bråk och procent.",
+    "answers": [
+      "1/2",
+      "1/6",
+      "2/6 = 1/3",
+      "2/5",
+      "3/12 = 1/4 = 25 %."
+    ],
+    "skills": [
+      "Räkna gynnsamma och möjliga utfall.",
+      "Uttrycka en chans i bråk och procent."
+    ],
+    "layout": "fraction"
+  },
+  {
+    "id": "5.2",
+    "title": "Sannolikhet i flera steg",
+    "intro": "När två händelser sker efter varandra behöver du följa chansen i båda stegen.",
+    "idea": "Multiplicera längs en väg i trädet. Utan återläggning ändras antalet kulor efter första dragningen.",
+    "formula": "P(A\\ \\mathrm{och}\\ B)=P(A)\\cdot P(B\\ \\mathrm{efter}\\ A)",
+    "example": [
+      "Två oberoende myntkast:",
+      "$P(\\mathrm{krona,\\ krona})=\\frac12\\cdot\\frac12=\\frac14$"
+    ],
+    "practice": [
+      [
+        "$\\frac12\\cdot\\frac12=\\frac{1}{\\ldots}$"
+      ],
+      [
+        "$\\frac12\\cdot\\frac14$"
+      ],
+      [
+        "Två tärningskast: P(sexa båda gånger)?"
+      ],
+      [
+        "Tre myntkast: P(krona varje gång)?"
+      ]
+    ],
+    "worked": [
+      "En påse har 2 röda och 2 blå kulor. Du drar två utan återläggning. Vad är P(två röda)?",
+      "Första: 2/4. Sedan: 1/3. Multiplicera: (2/4) · (1/3) = 1/6."
+    ],
+    "own": "En påse har 3 röda och 2 blå kulor. Dra två utan återläggning. Beräkna P(två röda). Rita gärna en väg i ett träd.",
+    "answers": [
+      "1/4",
+      "1/8",
+      "1/36",
+      "1/8",
+      "(3/5) · (2/4) = 6/20 = 3/10 = 30 %."
+    ],
+    "skills": [
+      "Multiplicera sannolikheter i flera steg.",
+      "Hålla reda på kulorna som återstår."
+    ],
+    "layout": "tree"
+  },
+  {
+    "id": "5.3",
+    "title": "Beräkningar med sannolikheter",
+    "intro": "Ibland är det enklare att räkna ut chansen för det som inte händer.",
+    "idea": "Alla möjligheter tillsammans har sannolikheten 1. Minst en betyder en eller flera.",
+    "formula": "P(\\mathrm{inte}\\ A)=1-P(A)",
+    "example": [
+      "$P(\\mathrm{inte\\ sexa})=1-\\frac16=\\frac56$",
+      "Etta eller tvåa på en tärning: 1/6 + 1/6 = 1/3."
+    ],
+    "practice": [
+      [
+        "$1-\\frac12=\\frac{2}{2}-\\frac12=\\ldots$"
+      ],
+      [
+        "$1-\\frac14$"
+      ],
+      [
+        "Vanlig tärning: P(etta eller sexa)?"
+      ],
+      [
+        "Vanlig tärning: P(inte etta)?"
+      ]
+    ],
+    "worked": [
+      "Du kastar ett mynt två gånger. Vad är P(minst en krona)?",
+      "Motsatsen är två klavar: 1/2 · 1/2 = 1/4. Sökta chansen: 1 − 1/4 = 3/4."
+    ],
+    "own": "Två oberoende snurror har hälften rött och hälften blått. Vad är P(minst ett rött)? Lista gärna möjligheterna.",
+    "answers": [
+      "1/2",
+      "3/4",
+      "2/6 = 1/3",
+      "5/6",
+      "RR, RB, BR, BB. Tre av fyra ger minst ett rött: 3/4 = 75 %."
+    ],
+    "skills": [
+      "Räkna med motsatsen.",
+      "Tolka minst en i en sannolikhetsfråga."
+    ],
+    "layout": "tree"
+  },
+  {
+    "id": "5.4",
+    "title": "Sannolikhet och statistik",
+    "intro": "Resultat från försök kan användas för att uppskatta en sannolikhet.",
+    "idea": "Relativ frekvens är andelen försök där något hände. En uppskattning är ingen garanti för nästa försök.",
+    "formula": "\\mathrm{relativ\\ frekvens}=\\frac{\\mathrm{antal\\ träffar}}{\\mathrm{antal\\ försök}}",
+    "example": [
+      "18 kronor på 40 myntkast:",
+      "$\\frac{18}{40}=0{,}45=45\\ \\%$"
+    ],
+    "practice": [
+      [
+        "5 träffar på 10 försök:",
+        "$\\frac5{10}=0{,}5=\\ldots\\ \\%$"
+      ],
+      [
+        "12 träffar på 20 försök: andel i %?"
+      ],
+      [
+        "Uppskatta 25 % av 40 försök."
+      ],
+      [
+        "P(sexa) = 1/6. Förväntat antal på 60 kast?"
+      ]
+    ],
+    "worked": [
+      "Rött kommer 30 gånger på 100 försök. Uppskatta antalet röda på 200 nya försök.",
+      "Andel: 30 %. Uppskattning: 0,30 · 200 = 60. Det verkliga antalet kan bli ett annat."
+    ],
+    "own": "Blått kommer 20 gånger på 50 försök. Uppskatta antalet blå på 100 nya försök. Visa hur du räknar.",
+    "answers": [
+      "50 %",
+      "60 %",
+      "10",
+      "10",
+      "20/50 = 40 %. 0,40 · 100 = cirka 40 blå."
+    ],
+    "skills": [
+      "Beräkna relativ frekvens.",
+      "Uppskatta ett antal utifrån försöksdata."
+    ],
+    "layout": "square"
+  },
+  {
+    "id": "5.5",
+    "title": "Kombinatorik",
+    "intro": "Kombinatorik hjälper dig att räkna hur många olika val du kan göra.",
+    "idea": "Multiplicera antalet val i varje steg, om varje val kan kombineras med alla val i nästa steg.",
+    "formula": "\\mathrm{antal}=\\mathrm{val\\ i\\ steg\\ 1}\\cdot\\mathrm{val\\ i\\ steg\\ 2}",
+    "example": [
+      "2 tröjor och 3 byxor ger:",
+      "$2\\cdot3=6\\ \\mathrm{kombinationer}$"
+    ],
+    "practice": [
+      [
+        "2 smörgåsar och 2 drycker:",
+        "2 · 2 = ___ kombinationer."
+      ],
+      [
+        "3 smörgåsar och 2 drycker: antal?"
+      ],
+      [
+        "3 tröjor och 4 byxor: antal?"
+      ],
+      [
+        "3 smörgåsar, 2 drycker och 2 frukter:",
+        "Hur många val med en av varje?"
+      ]
+    ],
+    "worked": [
+      "Det finns 4 glassorter och 3 toppingar. Du väljer en av varje. Hur många val finns?",
+      "Varje glassort har 3 val av topping: 4 · 3 = 12 kombinationer."
+    ],
+    "own": "Du väljer en av 3 tröjor och en av 2 byxor. Rita eller lista alla kombinationer. Hur många blir det?",
+    "answers": [
+      "4",
+      "6",
+      "12",
+      "12",
+      "6: T1–B1, T1–B2, T2–B1, T2–B2, T3–B1, T3–B2."
+    ],
+    "skills": [
+      "Räkna val i flera steg.",
+      "Kontrollera med lista eller träd."
+    ],
+    "layout": "tree"
+  },
+  {
+    "id": "5.6",
+    "title": "Lägesmått och spridningsmått",
+    "intro": "Lägesmått beskriver mitten eller det vanligaste. Spridning visar hur utspridda värdena är.",
+    "idea": "Sortera först. Median = mitten (vid jämnt antal: medel av de två mittersta). Typvärde = vanligaste värdet.",
+    "formula": "\\mathrm{medelvärde}=\\frac{\\mathrm{summan}}{\\mathrm{antalet}}",
+    "example": [
+      "2, 3, 3, 8: medelvärde 16 ÷ 4 = 4. Median 3.",
+      "Typvärde 3. Variationsbredd = max − min = 8 − 2 = 6."
+    ],
+    "practice": [
+      [
+        "Medelvärde av 2 och 6:",
+        "(2 + 6) ÷ 2 = ___"
+      ],
+      [
+        "Median av 7, 1, 3? Sortera först."
+      ],
+      [
+        "Typvärde för 2, 5, 5, 7?"
+      ],
+      [
+        "Variationsbredd för 3, 4, 10?"
+      ]
+    ],
+    "worked": [
+      "Restiderna är 5, 6, 6, 7 och 16 min. Vilket lägesmått beskriver en vanlig restid bäst?",
+      "Median 6 min, medelvärde 8 min. Här passar medianen bäst: den långa resan höjer medelvärdet."
+    ],
+    "own": "Restiderna är 4, 5, 5 och 18 min. Beräkna median och medelvärde. Vilket passar bäst för en vanlig restid?",
+    "answers": [
+      "4",
+      "3 (sorterat: 1, 3, 7)",
+      "5",
+      "7",
+      "Median: (5 + 5)/2 = 5 min. Medelvärde: 32/4 = 8 min. Medianen passar bäst här."
+    ],
+    "skills": [
+      "Beräkna lägesmått och variationsbredd.",
+      "Tolka ett avvikande värde."
+    ],
+    "layout": "table"
+  }
+]

@@ -4,6 +4,7 @@ Gemensam ordning, men arbetsytan anpassas till vad eleven ska göra. Första öv
 
 - Brödtext cirka 10,5–11 punkter; facit och figurlabels något mindre.
 - Bråkstreck och formler är vektorgrafik. Figurerna fungerar i svartvitt.
+- En grå ruta märkt **Regel / formel** samlar den korta förklaringen och formeln på varje blad. Rutan omsluter befintlig information och anpassas efter textens höjd; inga exempel, övningar eller skrivytor flyttas.
 - Räkneuppgifterna har lokal skrivyta; ingen gemensam ruta långt från uppgiften.
 - Textövningens arbetsyta ligger till höger om texten, normalt cirka 6 × 6 cm.
 - För ekvationer lämnas plats på höjden. För grafritning ges färdiga axlar. För listor och träd lämnas friare yta.

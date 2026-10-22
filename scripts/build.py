@@ -229,6 +229,42 @@ def workspace(row):
             for i in range(8):C.rect(370+i*21.25,185,21.25,17)
         else:note('Visa bråk och procent här.',370,196,8)
     else:writing_grid(370,207,170,170)
+def rule_box(row):
+    """Highlight the existing explanation/formula without moving any content.
+
+    Match plain()/formula() metrics so padding follows each section's actual
+    rule height. Examples, figures, exercises and workspaces keep their positions.
+    """
+    style=ParagraphStyle('measure-rule',parent=STYLE,fontSize=10.5,leading=14.5)
+    p=Paragraph(escape(row['idea']).replace('\n','<br/>'),style)
+    _,height=p.wrap(248,1000)
+    math_top=689-height-9
+    math_size=12
+    parsed=parse_math(row['formula'],math_size)
+    if parsed.width>248:
+        math_size*=248/parsed.width
+        parsed=parse_math(row['formula'],math_size)
+    extra_top=math_top-float(parsed.height)-10
+    extra_end=extra_top
+    for s in row.get('rule_extra',[]):
+        if s.startswith('$'):
+            m=parse_math(s,11)
+            if m.width>248:m=parse_math(s,11*248/m.width)
+            extra_end-=float(m.height)+4
+        else:
+            p=Paragraph(escape(s).replace('\n','<br/>'),ParagraphStyle('extra',parent=STYLE,fontSize=10,leading=14))
+            _,hh=p.wrap(248,1000);extra_end-=hh+4
+    bottom=(extra_end+1) if row.get('rule_extra') else math_top-float(parsed.height)-3
+    assert bottom>527, f'Rule box overlaps exercises: {CURRENT}'
+    C.setFillColor(colors.HexColor('#eeeeee'))
+    C.roundRect(38,bottom,260,715-bottom,4,stroke=0,fill=1)
+    C.setFillColor(colors.black)
+    heading('Regel / formel',44,704)
+    y=plain(row['idea'],44,689,248,10.5,min_y=615)-9
+    y=formula(row['formula'],44,y,248,12)-10
+    if row.get('rule_extra'):y=lines(row['rule_extra'],44,y,248,size=10,minimum=527)
+    CHECKS.append(dict(id=CURRENT,kind='rule-box',bottom=bottom,limit=527))
+    return y
 def worksheet(row,index):
     global CURRENT
     CURRENT=row['id'];note('MODUL 8  /  '+CURRENT,44,810)
@@ -236,9 +272,7 @@ def worksheet(row,index):
     ts=18
     while pdfmetrics.stringWidth(row['title'],'DB',ts)>506:ts-=.5
     heading(row['title'],44,781,ts);plain(row['intro'],44,762,505,11,min_y=719)
-    heading('Förstå och räkna',44,704)
-    y=plain(row['idea'],44,689,248,10.5,min_y=615)-9
-    y=formula(row['formula'],44,y,248,12)-10
+    y=rule_box(row)
     lines(row['example'],44,y,248,size=10,minimum=527)
     figure(CURRENT)
     C.setStrokeColor(colors.HexColor('#bbbbbb'));line(44,518,550,518,.5);C.setStrokeColor(colors.black)

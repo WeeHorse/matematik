@@ -2,7 +2,7 @@
 
 ## Version 2
 
-31 fristående A4-blad med korta förklaringar, egna figurer, synliga mellanled, en första övning med stöd och arbetsytor anpassade till uppgiften. Alla övningar och facit hör ihop med version 2. Den tidigare versionen finns på grenen `v1`.
+31 fristående A4-blad med korta förklaringar, en grå ruta för regel/formel, egna figurer, synliga mellanled, en första övning med stöd och arbetsytor anpassade till uppgiften. Alla övningar och facit hör ihop med version 2. Den tidigare versionen finns på grenen `v1`.
 
 Materialet följer delområdena i innehållsförteckningen till *Modul matematik 8*. Det är eget studiematerial och inte utgivet av läromedelsförlaget. Det är avsett för grundläggande träning, utan fördjupningsuppgifter, och täcker inte ensamt alla betygskriterier.
 

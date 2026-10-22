@@ -864,7 +864,6 @@
     "idea": "Ett helt varv är 360°. Samma andel av varvet ger samma andel av cirkelns area och omkrets.",
     "formula": "A_{\\mathrm{sektor}}=\\frac{v}{360}\\cdot\\pi r^2",
     "example": [
-      "$\\mathrm{båglängd}=\\frac{v}{360}\\cdot2\\pi r$",
       "$90/360=1/4$",
       "90° ger en fjärdedel av area och omkrets."
     ],
@@ -898,7 +897,10 @@
       "Hitta andelen av en cirkel.",
       "Skilja båglängd från sektorarea."
     ],
-    "layout": "geometry"
+    "layout": "geometry",
+    "rule_extra": [
+      "$\\mathrm{båglängd}=\\frac{v}{360}\\cdot2\\pi r$"
+    ]
   },
   {
     "id": "4.3",
@@ -907,7 +909,6 @@
     "idea": "Gör om till samma enhet innan du räknar. Kubikdecimeter hör ihop med liter, kubikcentimeter med milliliter.",
     "formula": "1\\ \\mathrm{dm}^3=1\\ \\mathrm{l}\\quad1\\ \\mathrm{cm}^3=1\\ \\mathrm{ml}",
     "example": [
-      "1 liter = 1 000 ml. 1 m³ = 1 000 liter.",
       "$2{,}5\\ \\mathrm{l}=2500\\ \\mathrm{ml}$"
     ],
     "practice": [
@@ -940,7 +941,10 @@
       "Omvandla volymenheter.",
       "Använda samma enhet i beräkningen."
     ],
-    "layout": "square"
+    "layout": "square",
+    "rule_extra": [
+      "1 liter = 1 000 ml. 1 m³ = 1 000 liter."
+    ]
   },
   {
     "id": "4.4",
@@ -1294,7 +1298,7 @@
     "formula": "\\mathrm{medelvärde}=\\frac{\\mathrm{summan}}{\\mathrm{antalet}}",
     "example": [
       "2, 3, 3, 8: medelvärde 16 ÷ 4 = 4. Median 3.",
-      "Typvärde 3. Variationsbredd = max − min = 8 − 2 = 6."
+      "Typvärde 3. Variationsbredd: 8 − 2 = 6."
     ],
     "practice": [
       [
@@ -1327,6 +1331,9 @@
       "Beräkna lägesmått och variationsbredd.",
       "Tolka ett avvikande värde."
     ],
-    "layout": "table"
+    "layout": "table",
+    "rule_extra": [
+      "Variationsbredd = största − minsta."
+    ]
   }
 ]
